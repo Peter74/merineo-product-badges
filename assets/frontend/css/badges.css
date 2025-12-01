@@ -1,0 +1,30 @@
+.merineo-badges {
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.25rem;
+    align-items:center;
+}
+.merineo-badges--align-left {
+    justify-content:flex-start;
+}
+.merineo-badges--align-right {
+    justify-content:flex-end;
+}
+.merineo-badge {
+    display:inline-flex;
+    align-items:center;
+    padding:0.15rem 0.45rem;
+    border-radius:9999px;
+    line-height:1.2;
+    white-space:nowrap;
+}
+.merineo-badge--type-featured {}
+.merineo-badge--type-sale {}
+.merineo-badge--type-new {}
+.merineo-badge--type-bestseller {}
+.merineo-badge--type-outofstock {}
+.merineo-badge--type-instock {}
+.merineo-badge--type-backorder {}
+.merineo-badge--source-category {}
+.merineo-badge--source-product {}
+.merineo-badge--source-auto {}

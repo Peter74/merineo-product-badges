@@ -1,0 +1,12 @@
+{
+  "name": "peter74/merineo-product-badges",
+  "description": "Advanced product badges for WordPress.",
+  "type": "wordpress-plugin",
+  "version": "1.0.0",
+  "require-dev": {
+    "php-stubs/wordpress-stubs": "^6.6",
+    "php-stubs/woocommerce-stubs": "^8",
+    "php-stubs/wp-cli-stubs": "^2",
+    "szepeviktor/phpstan-wordpress": "^1"
+  }
+}
