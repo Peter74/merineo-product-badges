@@ -47,7 +47,11 @@ class Settings_Page {
      */
     public function hooks(): void {
         add_action( 'admin_init', [ $this, 'register_settings' ] );
-        add_action( 'admin_menu', [ $this, 'connect_page_callback' ], 20 );
+
+        // Run after Menu::register_menu (priority 99), so the submenu page exists
+        // and get_plugin_page_hookname() can find it.
+        add_action( 'admin_menu', [ $this, 'connect_page_callback' ], 120 );
+
         add_action( 'admin_enqueue_scripts', [ $this, 'enqueue_assets' ] );
     }
 
@@ -154,7 +158,7 @@ class Settings_Page {
      * @link https://developer.wordpress.org/reference/functions/submit_button/
      */
     public function render_page(): void {
-        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+        if ( ! current_user_can( 'manage_woocommerce' ) && ! current_user_can( 'manage_options' ) ) {
             wp_die( esc_html__( 'You do not have permission to access this page.', 'merineo-product-badges' ) );
         }
 
