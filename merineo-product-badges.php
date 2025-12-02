@@ -3,7 +3,7 @@
  * Plugin Name:       Merineo Product Badges
  * Plugin URI:        https://merineo.sk/
  * Description:       Flexible WooCommerce product badges with global, category, and per-product configuration.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Merineo s.r.o. (PeterB)
  * Author URI:        https://merineo.sk/
  * Text Domain:       merineo-product-badges
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'MERINEO_PB_VERSION', '1.0.0' );
+define( 'MERINEO_PB_VERSION', '1.0.1' );
 define( 'MERINEO_PB_FILE', __FILE__ );
 define( 'MERINEO_PB_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MERINEO_PB_URL', plugin_dir_url( __FILE__ ) );

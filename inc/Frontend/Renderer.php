@@ -109,8 +109,7 @@ class Renderer {
      * @link https://developer.woocommerce.com/2023/03/28/the-different-woocommerce-page-types/
      */
     public function enqueue_styles(): void {
-        // Only load on product-related pages.
-        if ( ! ( is_shop() || is_product() || is_product_category() || is_product_tag() ) ) {
+        if ( is_admin() ) {
             return;
         }
 
