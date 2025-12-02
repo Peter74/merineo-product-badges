@@ -624,10 +624,13 @@ class Renderer {
             return [];
         }
 
+        $meta_key = $this->get_category_meta_key();
+
         $badges = [];
 
         foreach ( $terms as $term_id ) {
-            $json = get_term_meta( $term_id, 'merineo_product_badges', true );
+            /** @link https://developer.wordpress.org/reference/functions/get_term_meta/ */
+            $json = get_term_meta( $term_id, $meta_key, true );
             if ( ! is_string( $json ) || '' === $json ) {
                 continue;
             }
@@ -692,5 +695,27 @@ class Renderer {
         }
 
         return $badges;
+    }
+
+    /**
+     * Get category meta key for current site.
+     *
+     * Must match the key used in Category_Meta to avoid overwriting /
+     * sharing data between sites in a multisite network.
+     *
+     * @return string
+     *
+     * @link https://developer.wordpress.org/reference/functions/get_current_blog_id/
+     * @link https://developer.wordpress.org/reference/functions/is_multisite/
+     */
+    private function get_category_meta_key(): string {
+        $meta_key = 'merineo_product_badges';
+
+        $blog_id = (int) get_current_blog_id();
+        if ( is_multisite() && $blog_id > 0 ) {
+            $meta_key .= '_' . $blog_id;
+        }
+
+        return $meta_key;
     }
 }

@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Category_Meta {
 
     /**
-     * Term meta key.
+     * Term meta key (per-site).
      *
      * @var string
      */
@@ -32,9 +32,25 @@ class Category_Meta {
      * Constructor.
      *
      * @param Settings $settings Settings service.
+     *
+     * @link https://developer.wordpress.org/reference/functions/get_current_blog_id/
+     * @link https://developer.wordpress.org/reference/functions/is_multisite/
      */
     public function __construct( Settings $settings ) {
         $this->settings = $settings;
+
+        // Base meta key.
+        $meta_key = 'merineo_product_badges';
+
+        // On multisite, suffix with current blog ID so each site has its own
+        // category badge meta and does not overwrite other sites.
+        $blog_id = (int) get_current_blog_id();
+
+        if ( is_multisite() && $blog_id > 0 ) {
+            $meta_key .= '_' . $blog_id;
+        }
+
+        $this->meta_key = $meta_key;
     }
 
     /**
