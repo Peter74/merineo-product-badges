@@ -1,0 +1,384 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Merineo Product Badges 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-02 00:00+0000\n"
+"PO-Revision-Date: 2025-12-02 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Slovak\n"
+"Language: sk_SK\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: merineo-product-badges\n"
+"Plural-Forms: nplurals=3; plural=(n==1)?0:((n>=2 && n<=4)?1:2);\n"
+
+#: merineo-product-badges.php
+msgid "Merineo Product Badges"
+msgstr "Merineo Product Badges"
+
+#: merineo-product-badges.php
+msgid "Product Badges"
+msgstr "Produktové badge"
+
+#: inc/Admin/Menu.php
+msgid "Settings"
+msgstr "Nastavenia"
+
+#: inc/Admin/Menu.php
+msgid "Merineo"
+msgstr "Merineo"
+
+#: inc/Admin/Settings_Page.php
+msgid "Merineo Product Badges Settings"
+msgstr "Nastavenia Merineo Product Badges"
+
+#: inc/Admin/Settings_Page.php
+msgid "Layout & Placement"
+msgstr "Rozloženie a umiestnenie"
+
+#: inc/Admin/Settings_Page.php
+msgid "Design"
+msgstr "Dizajn"
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic Badges"
+msgstr "Automatické badge"
+
+#: inc/Admin/Settings_Page.php
+msgid "Custom CSS"
+msgstr "Vlastné CSS"
+
+#: inc/Admin/Settings_Page.php
+msgid "General settings"
+msgstr "Všeobecné nastavenia"
+
+#: inc/Admin/Settings_Page.php
+msgid "Enable product badges"
+msgstr "Zapnúť produktové badge"
+
+#: inc/Admin/Settings_Page.php
+msgid "Turn the whole badge functionality on or off."
+msgstr "Zapne alebo vypne celé zobrazovanie produktových badge."
+
+#: inc/Admin/Settings_Page.php
+msgid "Single product placement"
+msgstr "Umiestnenie na stránke produktu"
+
+#: inc/Admin/Settings_Page.php
+msgid "Product archive placement"
+msgstr "Umiestnenie vo výpise produktov"
+
+#: inc/Admin/Settings_Page.php
+msgid "Custom placement"
+msgstr "Vlastné umiestnenie"
+
+#: inc/Admin/Settings_Page.php
+msgid "Hook"
+msgstr "Hook"
+
+#: inc/Admin/Settings_Page.php
+msgid "Custom hook"
+msgstr "Vlastný hook"
+
+#: inc/Admin/Settings_Page.php
+msgid "Hook priority"
+msgstr "Priorita hooku"
+
+#: inc/Admin/Settings_Page.php
+msgid "Alignment"
+msgstr "Zarovnanie"
+
+#: inc/Admin/Settings_Page.php
+msgid "Left"
+msgstr "Vľavo"
+
+#: inc/Admin/Settings_Page.php
+msgid "Right"
+msgstr "Vpravo"
+
+#: inc/Admin/Settings_Page.php
+msgid "Layout"
+msgstr "Rozloženie"
+
+#: inc/Admin/Settings_Page.php
+msgid "Inline"
+msgstr "Vedľa seba"
+
+#: inc/Admin/Settings_Page.php
+msgid "Stacked"
+msgstr "Pod sebou"
+
+#: inc/Admin/Settings_Page.php
+msgid "Style variant"
+msgstr "Štýl badge"
+
+#: inc/Admin/Settings_Page.php
+msgid "Pill"
+msgstr "Pill (kapsula)"
+
+#: inc/Admin/Settings_Page.php
+msgid "Square"
+msgstr "Hranatý"
+
+#: inc/Admin/Settings_Page.php
+msgid "Rounded"
+msgstr "Zaoblený"
+
+#: inc/Admin/Settings_Page.php
+msgid "Circle"
+msgstr "Kruh"
+
+#: inc/Admin/Settings_Page.php
+msgid "Vertical ribbon"
+msgstr "Zvislá stuha"
+
+#: inc/Admin/Settings_Page.php
+msgid "Corner ribbon"
+msgstr "Rohová stuha"
+
+#: inc/Admin/Settings_Page.php
+msgid "Tag"
+msgstr "Tag"
+
+#: inc/Admin/Settings_Page.php
+msgid "Outline style"
+msgstr "Len obrys"
+
+#: inc/Admin/Settings_Page.php
+msgid "Render badges with outline instead of solid fill."
+msgstr "Zobraziť badge len s obrysom namiesto plnej výplne."
+
+#: inc/Admin/Settings_Page.php
+msgid "Badge typography"
+msgstr "Typografia badge"
+
+#: inc/Admin/Settings_Page.php
+msgid "Font size (px)"
+msgstr "Veľkosť písma (px)"
+
+#: inc/Admin/Settings_Page.php
+msgid "Text transform"
+msgstr "Transformácia textu"
+
+#: inc/Admin/Settings_Page.php
+msgid "Normal"
+msgstr "Normálna"
+
+#: inc/Admin/Settings_Page.php
+msgid "Uppercase"
+msgstr "Veľké písmená"
+
+#: inc/Admin/Settings_Page.php
+msgid "Font weight"
+msgstr "Hrúbka písma"
+
+#: inc/Admin/Settings_Page.php
+msgid "Normal weight"
+msgstr "Normálne"
+
+#: inc/Admin/Settings_Page.php
+msgid "Bold"
+msgstr "Tučné"
+
+#: inc/Admin/Settings_Page.php
+msgid "Letter spacing (px)"
+msgstr "Rozostup písmen (px)"
+
+#: inc/Admin/Settings_Page.php
+msgid "Shadow"
+msgstr "Tieň"
+
+#: inc/Admin/Settings_Page.php
+msgid "Enable subtle shadow on badges"
+msgstr "Zapnúť jemný tieň pod badge"
+
+#: inc/Admin/Settings_Page.php
+msgid "Badge preview"
+msgstr "Náhľad badge"
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic badge: New"
+msgstr "Automatický badge: Novinka"
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic badge: Featured"
+msgstr "Automatický badge: Odporúčaný"
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic badge: Sale"
+msgstr "Automatický badge: Akcia"
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic badge: Stock"
+msgstr "Automatický badge: Sklad"
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic badge: Bestseller"
+msgstr "Automatický badge: Bestseller"
+
+#: inc/Admin/Settings_Page.php
+msgid "Enabled"
+msgstr "Zapnuté"
+
+#: inc/Admin/Settings_Page.php
+msgid "Label"
+msgstr "Text"
+
+#: inc/Admin/Settings_Page.php
+msgid "Background color"
+msgstr "Farba pozadia"
+
+#: inc/Admin/Settings_Page.php
+msgid "Text color"
+msgstr "Farba textu"
+
+#: inc/Admin/Settings_Page.php
+msgid "Show as"
+msgstr "Zobraziť ako"
+
+#: inc/Admin/Settings_Page.php
+msgid "Hidden"
+msgstr "Nezobrazovať"
+
+#: inc/Admin/Settings_Page.php
+msgid "Text label"
+msgstr "Len text"
+
+#: inc/Admin/Settings_Page.php
+msgid "Percentage"
+msgstr "Percento"
+
+#: inc/Admin/Settings_Page.php
+msgid "Saved amount"
+msgstr "Ušetrená suma"
+
+#: inc/Admin/Settings_Page.php
+msgid "Days to show as new"
+msgstr "Počet dní ako novinka"
+
+#: inc/Admin/Settings_Page.php
+msgid "Number of days after publication when product is still considered new."
+msgstr "Počet dní od zverejnenia, počas ktorých sa produkt zobrazuje ako novinka."
+
+#: inc/Admin/Settings_Page.php
+msgid "Top bestseller count"
+msgstr "Počet top bestsellerov"
+
+#: inc/Admin/Settings_Page.php
+msgid "Number of top selling products that should receive the bestseller badge."
+msgstr "Počet najpredávanejších produktov, ktoré dostanú badge Bestseller."
+
+#: inc/Admin/Settings_Page.php
+msgid "Custom CSS for badges"
+msgstr "Vlastné CSS pre badge"
+
+#: inc/Admin/Settings_Page.php
+msgid "All custom CSS is automatically scoped under the badges wrapper to avoid breaking your theme."
+msgstr "Všetko vlastné CSS je automaticky obmedzené len na wrapper badge, aby nerozbilo vzhľad témy."
+
+#: inc/Admin/Settings_Page.php
+msgid "CSS helper"
+msgstr "CSS pomocník"
+
+#: inc/Admin/Settings_Page.php
+msgid "Click to copy selector"
+msgstr "Kliknutím skopírujete selektor"
+
+#: inc/Admin/Category_Meta.php
+msgid "Category badges"
+msgstr "Badge kategórie"
+
+#: inc/Admin/Category_Meta.php
+msgid "Configure badges that will be applied to all products in this category."
+msgstr "Nastavte badge, ktoré sa použijú pre všetky produkty v tejto kategórii."
+
+#: inc/Admin/Category_Meta.php
+#: inc/Admin/Product_Meta.php
+msgid "Add badge"
+msgstr "Pridať badge"
+
+#: inc/Admin/Category_Meta.php
+#: inc/Admin/Product_Meta.php
+msgid "Remove badge"
+msgstr "Odstrániť badge"
+
+#: inc/Admin/Product_Meta.php
+msgid "Product badges"
+msgstr "Badge produktu"
+
+#: inc/Admin/Product_Meta.php
+msgid "Configure badges specific to this product."
+msgstr "Nastavte badge, ktoré sú špecifické pre tento produkt."
+
+#: inc/Admin/Product_Meta.php
+msgid "No badges yet. Click the button below to add your first badge."
+msgstr "Zatiaľ nemáte žiadne badge. Kliknite na tlačidlo nižšie a pridajte prvý badge."
+
+#: inc/Admin/Product_Meta.php
+#: inc/Admin/Category_Meta.php
+msgid "Custom badge"
+msgstr "Vlastný badge"
+
+#: inc/Admin/Product_Meta.php
+#: inc/Admin/Category_Meta.php
+msgid "Badge text"
+msgstr "Text badge"
+
+#: inc/Admin/Product_Meta.php
+#: inc/Admin/Category_Meta.php
+msgid "Badge background color"
+msgstr "Farba pozadia badge"
+
+#: inc/Admin/Product_Meta.php
+#: inc/Admin/Category_Meta.php
+msgid "Badge text color"
+msgstr "Farba textu badge"
+
+#: inc/Admin/Settings_Page.php
+msgid "Settings saved."
+msgstr "Nastavenia boli uložené."
+
+#: inc/Frontend/Renderer.php
+msgid "New"
+msgstr "Novinka"
+
+#: inc/Frontend/Renderer.php
+msgid "Featured"
+msgstr "Odporúčaný"
+
+#: inc/Frontend/Renderer.php
+msgid "Sale"
+msgstr "Akcia"
+
+#: inc/Frontend/Renderer.php
+msgid "In stock"
+msgstr "Na sklade"
+
+#: inc/Frontend/Renderer.php
+msgid "Out of stock"
+msgstr "Vypredané"
+
+#: inc/Frontend/Renderer.php
+msgid "On backorder"
+msgstr "Na objednávku"
+
+#: inc/Frontend/Renderer.php
+msgid "Bestseller"
+msgstr "Bestseller"
+
+#: inc/Admin/Settings_Page.php
+msgid "Sale badge mode"
+msgstr "Režim badge Akcia"
+
+#: inc/Admin/Settings_Page.php
+msgid "Use WooCommerce price formatting for the saved amount."
+msgstr "Použiť formátovanie ceny z WooCommerce pre ušetrenú sumu."
+
+#: inc/Admin/Settings_Page.php
+msgid "Global settings for all badges."
+msgstr "Globálne nastavenia pre všetky badge."
+
+#: inc/Admin/Settings_Page.php
+msgid "Preview"
+msgstr "Náhľad"

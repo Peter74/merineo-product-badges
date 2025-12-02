@@ -1,0 +1,384 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Merineo Product Badges 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-02 00:00+0000\n"
+"PO-Revision-Date: 2025-12-02 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Domain: merineo-product-badges\n"
+"X-Generator: ChatGPT (Merineo Product Badges)\n"
+
+#: merineo-product-badges.php
+msgid "Merineo Product Badges"
+msgstr ""
+
+#: merineo-product-badges.php
+msgid "Product Badges"
+msgstr ""
+
+#: inc/Admin/Menu.php
+msgid "Settings"
+msgstr ""
+
+#: inc/Admin/Menu.php
+msgid "Merineo"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Merineo Product Badges Settings"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Layout & Placement"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Design"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic Badges"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Custom CSS"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "General settings"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Enable product badges"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Turn the whole badge functionality on or off."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Single product placement"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Product archive placement"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Custom placement"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Hook"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Custom hook"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Hook priority"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Alignment"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Left"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Right"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Layout"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Inline"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Stacked"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Style variant"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Pill"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Square"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Rounded"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Circle"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Vertical ribbon"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Corner ribbon"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Tag"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Outline style"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Render badges with outline instead of solid fill."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Badge typography"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Font size (px)"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Text transform"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Normal"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Uppercase"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Font weight"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Normal weight"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Bold"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Letter spacing (px)"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Shadow"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Enable subtle shadow on badges"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Badge preview"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic badge: New"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic badge: Featured"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic badge: Sale"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic badge: Stock"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Automatic badge: Bestseller"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Enabled"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Label"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Background color"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Text color"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Show as"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Hidden"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Text label"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Percentage"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Saved amount"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Days to show as new"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Number of days after publication when product is still considered new."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Top bestseller count"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Number of top selling products that should receive the bestseller badge."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Custom CSS for badges"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "All custom CSS is automatically scoped under the badges wrapper to avoid breaking your theme."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "CSS helper"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Click to copy selector"
+msgstr ""
+
+#: inc/Admin/Category_Meta.php
+msgid "Category badges"
+msgstr ""
+
+#: inc/Admin/Category_Meta.php
+msgid "Configure badges that will be applied to all products in this category."
+msgstr ""
+
+#: inc/Admin/Category_Meta.php
+#: inc/Admin/Product_Meta.php
+msgid "Add badge"
+msgstr ""
+
+#: inc/Admin/Category_Meta.php
+#: inc/Admin/Product_Meta.php
+msgid "Remove badge"
+msgstr ""
+
+#: inc/Admin/Product_Meta.php
+msgid "Product badges"
+msgstr ""
+
+#: inc/Admin/Product_Meta.php
+msgid "Configure badges specific to this product."
+msgstr ""
+
+#: inc/Admin/Product_Meta.php
+msgid "No badges yet. Click the button below to add your first badge."
+msgstr ""
+
+#: inc/Admin/Product_Meta.php
+#: inc/Admin/Category_Meta.php
+msgid "Custom badge"
+msgstr ""
+
+#: inc/Admin/Product_Meta.php
+#: inc/Admin/Category_Meta.php
+msgid "Badge text"
+msgstr ""
+
+#: inc/Admin/Product_Meta.php
+#: inc/Admin/Category_Meta.php
+msgid "Badge background color"
+msgstr ""
+
+#: inc/Admin/Product_Meta.php
+#: inc/Admin/Category_Meta.php
+msgid "Badge text color"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Settings saved."
+msgstr ""
+
+#: inc/Frontend/Renderer.php
+msgid "New"
+msgstr ""
+
+#: inc/Frontend/Renderer.php
+msgid "Featured"
+msgstr ""
+
+#: inc/Frontend/Renderer.php
+msgid "Sale"
+msgstr ""
+
+#: inc/Frontend/Renderer.php
+msgid "In stock"
+msgstr ""
+
+#: inc/Frontend/Renderer.php
+msgid "Out of stock"
+msgstr ""
+
+#: inc/Frontend/Renderer.php
+msgid "On backorder"
+msgstr ""
+
+#: inc/Frontend/Renderer.php
+msgid "Bestseller"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Sale badge mode"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Use WooCommerce price formatting for the saved amount."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Global settings for all badges."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php
+msgid "Preview"
+msgstr ""
