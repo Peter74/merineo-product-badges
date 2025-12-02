@@ -29,6 +29,27 @@ define( 'MERINEO_PB_URL', plugin_dir_url( __FILE__ ) );
 define( 'MERINEO_PB_OPTION_NAME', 'merineo_product_badges_settings' );
 define( 'MERINEO_PB_TRANSIENT_BESTSELLERS', 'merineo_pb_bestsellers' );
 
+// Add "Settings" link under plugin name on Plugins screen.
+// Documentation: https://developer.wordpress.org/reference/hooks/plugin_action_links_plugin_file/
+// Documentation: https://developer.wordpress.org/reference/functions/admin_url/
+add_filter(
+    'plugin_action_links_' . plugin_basename( __FILE__ ),
+    static function ( array $links ): array {
+        $url = admin_url( 'admin.php?page=merineo-product-badges' );
+
+        $settings_link = sprintf(
+            '<a href="%s">%s</a>',
+            esc_url( $url ),
+            esc_html__( 'Settings', 'merineo-product-badges' )
+        );
+
+        // Put our link first.
+        array_unshift( $links, $settings_link );
+
+        return $links;
+    }
+);
+
 register_activation_hook(
     __FILE__,
     static function (): void {

@@ -1,23 +1,231 @@
+/* Root wrapper – keeps styles scoped to badges only */
+.merineo-badges-scope {
+    position: relative;
+}
+
+/* Main badges container */
 .merineo-badges {
-    display:flex;
-    flex-wrap:wrap;
-    gap:0.25rem;
-    align-items:center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    width: 100%;
 }
+
+/* Alignment */
 .merineo-badges--align-left {
-    justify-content:flex-start;
+    justify-content: flex-start;
 }
+
 .merineo-badges--align-right {
-    justify-content:flex-end;
+    justify-content: flex-end;
 }
+
+/* Layout: inline vs stacked */
+.merineo-badges--inline {
+    flex-direction: row;
+    align-items: center;
+}
+
+.merineo-badges--stacked {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Right alignment for stacked layout – move column to the right */
+.merineo-badges--stacked.merineo-badges--align-right {
+    align-items: flex-end;
+}
+
+/* left alignment for stacked */
+.merineo-badges--stacked.merineo-badges--align-left {
+    align-items: flex-start;
+}
+
+/* Base badge styling */
 .merineo-badge {
-    display:inline-flex;
-    align-items:center;
-    padding:0.15rem 0.45rem;
-    border-radius:9999px;
-    line-height:1.2;
-    white-space:nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.2rem 0.6rem;
+    line-height: 1.25;
+    white-space: normal;
+
+    font-size: var(--merineo-badge-font-size, 0.75rem);
+    font-weight: var(--merineo-badge-font-weight, 600);
+    letter-spacing: var(--merineo-badge-letter-spacing, 0);
+    text-transform: var(--merineo-badge-text-transform, none);
+
+    border-radius: 9999px; /* pill default */
+    background-color: var(--merineo-badge-bg, #2563eb);
+    color: var(--merineo-badge-color, #ffffff);
+    border: 1px solid transparent;
+    box-shadow: var(--merineo-badge-shadow, none);
 }
+
+/* Outline mode: no fill, only border */
+.merineo-badges--outline .merineo-badge {
+    background-color: transparent;
+    border-color: var(--merineo-badge-bg, currentColor);
+}
+
+/* -------------------------------------------------------
+ * Shape variants
+ * ---------------------------------------------------- */
+
+/* pill (default) – already covered by base, but keep explicit class */
+.merineo-badges--style-pill .merineo-badge {
+    border-radius: 9999px;
+}
+
+/* square */
+.merineo-badges--style-square .merineo-badge {
+    border-radius: 3px;
+}
+
+/* rounded rectangle */
+.merineo-badges--style-rounded .merineo-badge {
+    border-radius: 8px;
+}
+
+/* circle – good for short text / icon */
+.merineo-badges--style-circle .merineo-badge {
+    border-radius: 9999px;
+    width: 3.5rem;        /* väčší kruh */
+    height: 3.5rem;
+    box-sizing: border-box;
+    padding: 0.4rem;      /* cca 6–7px „vzduchu“ okolo textu */
+    text-align: center;
+    font-size: 0.7rem;    /* trochu menší text ako default 0.75rem */
+    line-height: 1.2;
+}
+
+/* vertical ribbon – small notch at the bottom */
+.merineo-badges--style-ribbon-vertical .merineo-badge {
+    position: relative;
+    border-radius: 6px 6px 0 0;
+    padding: 0.35rem 0.7rem;
+}
+.merineo-badges--style-ribbon-vertical .merineo-badge::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.5rem;
+    margin: 0 auto;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0.5rem 0.6rem 0 0.6rem;
+    border-color: var(--merineo-badge-bg, #2563eb) transparent transparent transparent;
+}
+
+/* Extra spacing for vertical ribbons when stacked
+ * so the notch does not overlap the next badge */
+.merineo-badges--style-ribbon-vertical.merineo-badges--stacked .merineo-badge {
+    margin-bottom: 0.5rem;
+}
+
+/* corner ribbon – badge so špicom zo spodného pravého rohu */
+.merineo-badges--style-ribbon-corner {
+    position: relative;
+}
+
+.merineo-badges--style-ribbon-corner .merineo-badge {
+    position: relative;
+    border-radius: 4px;
+    padding: 0.25rem 0.75rem;
+    margin-right: 0.6rem;   /* priestor pre ďalší badge vedľa */
+    margin-bottom: 0.4rem;  /* medzera kvôli špicu pri stacked */
+}
+
+.merineo-badges--style-ribbon-corner .merineo-badge::after {
+    content: "";
+    position: absolute;
+    right: 0.35rem;         /* trochu od pravého rohu (0 až 0.4 podľa oka) */
+    bottom: -0.5rem;        /* špic pod badge */
+    width: 0;
+    height: 0;
+    border-style: solid;
+    /*       top   right bottom left  */
+    border-width: 0.5rem 0.5rem 0 0.5rem;
+    border-color: var(--merineo-badge-bg, #2563eb) transparent transparent transparent;
+}
+
+/* tag – obdĺžnik so špicom doprava, zarovno so šírkou ostatných badge */
+.merineo-badges--style-tag .merineo-badge {
+    position: relative;
+    border-radius: 4px 0 0 4px;
+    margin-right: 0.5rem;   /* priestor pre špic */
+    margin-bottom: 0.35rem; /* medzera pri stacked */
+}
+
+.merineo-badges--style-tag .merineo-badge::after {
+    content: "";
+    position: absolute;
+    right: -0.5rem;         /* špic vyjde von, ale presne o toľko, koľko je margin-right */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    /*        top   right bottom left  */
+    border-width: 0.85rem 0 0.85rem 0.5rem;
+    border-color: transparent transparent transparent var(--merineo-badge-bg, #2563eb);
+}
+
+/* -------------------------------------------------------
+ * Overlay badges on product image in product archives (loop)
+ * ---------------------------------------------------- */
+
+/* WooCommerce loop items – poskytnú referenčný bod pre absolute */
+.woocommerce ul.products li.product,
+ul.products li.product {
+    position: relative;
+}
+
+/* Náš wrapper v loop kontexte prepneme do absolute overlay režimu */
+.merineo-badges-scope--loop {
+    position: absolute;
+    z-index: 5;
+    top: 0.75rem;     /* od vrchu karty / obrázka */
+    left: 0.75rem;
+    right: 0.75rem;   /* necháme plnú šírku, aby align-right fungoval */
+    pointer-events: none; /* badges neblokujú klik na produkt */
+}
+
+/* Align right v loop kontexte – istota, že sa drží pravého rohu */
+.merineo-badges-scope--loop .merineo-badges--align-right {
+    justify-content: flex-end;
+}
+
+/* -------------------------------------------------------
+ * Overlay badges on single product page
+ * ---------------------------------------------------- */
+
+/* Woo single product wrapper – použijeme ho ako referenciu pre absolute */
+.single-product div.product {
+    position: relative;
+}
+
+/* Náš single scope dáme do overlay režimu podobne ako v loop-e */
+.single-product div.product .merineo-badges-scope--single {
+    position: absolute;
+    z-index: 5;
+    top: 0.75rem;     /* vzdialenosť od vrchu produktu */
+    left: 0.75rem;
+    right: 0.75rem;   /* aby align-right vedel ísť až doprava */
+    pointer-events: none;
+}
+
+/* Align right v single kontexte – nech máme istotu */
+.single-product div.product .merineo-badges-scope--single .merineo-badges--align-right {
+    justify-content: flex-end;
+}
+
+/* -------------------------------------------------------
+ * Type / source hooks for user CSS
+ * ---------------------------------------------------- */
+
 .merineo-badge--type-featured {}
 .merineo-badge--type-sale {}
 .merineo-badge--type-new {}
@@ -25,6 +233,7 @@
 .merineo-badge--type-outofstock {}
 .merineo-badge--type-instock {}
 .merineo-badge--type-backorder {}
+
 .merineo-badge--source-category {}
 .merineo-badge--source-product {}
 .merineo-badge--source-auto {}

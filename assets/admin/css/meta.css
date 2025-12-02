@@ -1,0 +1,92 @@
+/* Shared admin styles for product & category badge editors */
+
+.merineo-pb-badges-box .merineo-pb-badges-list,
+.merineo-pb-term-badges .merineo-pb-badges-list {
+    margin-top: 8px;
+}
+
+/* Kartičky (postbox) pre jednotlivé badge */
+.merineo-pb-badge-item.postbox {
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border-color: #d1d5db;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+    background-color: #ffffff;
+}
+
+/* Produkt – menší padding */
+.merineo-pb-badges-box .merineo-pb-badge-item.postbox .inside {
+    padding: 8px;
+}
+
+/* Kategória – necháme pôvodný „vzdušnejší“ */
+.merineo-pb-term-badges .merineo-pb-badge-item.postbox .inside {
+    padding: 14px 16px 16px;
+}
+
+/* Header kartičky: "Text pre badge" + X vpravo */
+.merineo-pb-badge-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.merineo-pb-badge-title {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* Remove badge – malé X vpravo hore */
+.merineo-pb-badge-remove {
+    border: 0;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #2563eb;
+    width: auto;
+    height: auto;
+    padding: 0 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+}
+
+.merineo-pb-badge-remove:hover {
+    color: #1d4ed8;
+    background-color: rgba(37, 99, 235, 0.06);
+}
+
+.merineo-pb-badge-remove:focus {
+    outline: 2px solid #2563eb;
+    outline-offset: 1px;
+}
+
+/* Riadok s farbami */
+.merineo-pb-badge-colors {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.merineo-pb-color-wrap {
+    flex: 1 1 0;
+}
+
+.merineo-pb-color-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #4b5563;
+}
+
+/* Veľké Add badge tlačidlo */
+.merineo-pb-badges-box .merineo-pb-add-badge,
+.merineo-pb-term-badges .merineo-pb-add-badge {
+    width: 100%;
+    text-align: center;
+    margin-top: 8px;
+}

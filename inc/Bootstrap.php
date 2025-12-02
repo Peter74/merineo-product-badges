@@ -65,14 +65,22 @@ final class Bootstrap {
         );
     }
 
+    /**
+     * Declare HPOS compatibility (we don't touch orders directly).
+     *
+     * @return void
+     *
+     * @link https://developer.woocommerce.com/docs/features/high-performance-order-storage/recipe-book/#declaring-extension-in-compatibility
+     */
     private static function declare_hpos_compatibility(): void {
         add_action(
             'before_woocommerce_init',
             static function (): void {
-                if ( class_exists( '\\Automattic\\WooCommerce\\Utilities\\Features' ) ) {
-                    \\Automattic\\WooCommerce\\Utilities\\Features::declare_compatibility(
+                // Use FeaturesUtil as per official WooCommerce docs.
+                if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+                    \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
                         'custom_order_tables',
-                        MERINEO_PB_FILE,
+                        'merineo-product-badges/merineo-product-badges.php',
                         true
                     );
                 }

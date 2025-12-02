@@ -1,0 +1,425 @@
+.merineo-pb-settings .merineo-pb-card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+}
+
+.merineo-pb-settings .merineo-pb-card h2 {
+    margin-top: 0;
+}
+
+/* Subheading (e.g. "Badge style") */
+.merineo-pb-settings-subheading {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+}
+
+/* Fancy toggle switch */
+.merineo-pb-settings .merineo-pb-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Hide native checkbox visually, keep accessibility */
+.merineo-pb-settings .merineo-pb-toggle input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Text + visual toggle in one span */
+.merineo-pb-settings .merineo-pb-toggle > span {
+    position: relative;
+    padding-left: 48px; /* space for switch on the left */
+    line-height: 1.4;
+}
+
+/* Track */
+.merineo-pb-settings .merineo-pb-toggle > span::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 32px;
+    height: 18px;
+    border-radius: 999px;
+    background-color: #d1d5db;
+    transform: translateY(-50%);
+    transition: background-color 0.18s ease-in-out;
+}
+
+/* Knob */
+.merineo-pb-settings .merineo-pb-toggle > span::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    transform: translateY(-50%);
+    transition: transform 0.18s ease-in-out;
+}
+
+/* Checked state */
+.merineo-pb-settings .merineo-pb-toggle input[type="checkbox"]:checked + span::before {
+    background-color: #22c55e;
+}
+
+.merineo-pb-settings .merineo-pb-toggle input[type="checkbox"]:checked + span::after {
+    transform: translate(14px, -50%);
+}
+
+/* Generic grid */
+.merineo-pb-settings .merineo-pb-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.merineo-pb-settings .merineo-pb-grid--2 .merineo-pb-field {
+    flex: 1 1 calc(50% - 16px);
+    min-width: 220px;
+}
+
+.merineo-pb-settings .merineo-pb-field--full {
+    flex: 1 1 100%;
+}
+
+.merineo-pb-settings .merineo-pb-field label {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.merineo-pb-settings .merineo-pb-field input[type="number"],
+.merineo-pb-settings .merineo-pb-field select {
+    width: 100%;
+    max-width: 260px;
+}
+
+/* Placement rows */
+.merineo-pb-placement-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.merineo-pb-placement-col {
+    flex: 1 1 220px;
+}
+
+.merineo-pb-placement-col--small {
+    flex: 0 0 140px;
+}
+
+.merineo-pb-placement-col .merineo-pb-label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+/* Accordion */
+.merineo-pb-accordion {
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    background-color: #f9fafb;
+}
+
+.merineo-pb-accordion-header {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.merineo-pb-accordion-title {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.merineo-pb-accordion-label {
+    font-weight: 600;
+}
+
+.merineo-pb-accordion-preview {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.merineo-pb-accordion-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.merineo-pb-accordion-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.merineo-pb-accordion-body {
+    display: none;
+    padding: 0 12px 12px;
+    border-top: 1px solid #e5e7eb;
+    background-color: #fff;
+}
+
+.merineo-pb-accordion.is-open .merineo-pb-accordion-body {
+    display: block;
+}
+
+.merineo-pb-order-note {
+    margin-top: 12px;
+    font-style: italic;
+}
+
+/* Selectors (CSS helper) */
+.merineo-pb-selectors-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.merineo-pb-copy-selector {
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 2px 6px;
+}
+
+.merineo-pb-copy-selector.is-copied {
+    border-color: #46b450;
+    box-shadow: 0 0 0 1px #46b450;
+}
+
+/* Tabs */
+.merineo-pb-tabs {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+/* -------------------------------------------------------
+ * Style picker (Design tab)
+ * ---------------------------------------------------- */
+
+.merineo-pb-settings .merineo-pb-style-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
+
+.merineo-pb-settings .merineo-pb-style-option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: border-color 0.12s ease-in-out, box-shadow 0.12s ease-in-out, background-color 0.12s ease-in-out;
+}
+
+/* Highlight whole style card when selected – blue border + subtle shadow */
+.merineo-pb-settings .merineo-pb-style-option:has(input[type="radio"]:checked) {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
+    background-color: #f9fafb;
+}
+
+.merineo-pb-settings .merineo-pb-style-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.merineo-pb-settings .merineo-pb-style-option:hover {
+    border-color: #cbd5f5;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+}
+
+.merineo-pb-settings .merineo-pb-style-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 46px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    background-color: #2563eb;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.merineo-pb-settings .merineo-pb-style-preview-text {
+    padding: 0 8px;
+}
+
+.merineo-pb-settings .merineo-pb-style-option-label {
+    font-size: 11px;
+    color: #4b5563;
+}
+
+/* Selected style option */
+/* Selected style option – only preview border + optional bold label */
+.merineo-pb-settings .merineo-pb-style-option input[type="radio"]:checked ~ .merineo-pb-style-preview {
+    border-color: #2563eb;
+}
+
+.merineo-pb-settings .merineo-pb-style-option input[type="radio"]:checked ~ .merineo-pb-style-option-label {
+    font-weight: 600; /* ak nechceš zvýraznenie textu, môžeš tento riadok vypustiť */
+}
+
+/* Preview shapes */
+.merineo-pb-settings .merineo-pb-style-preview--pill {
+    border-radius: 999px;
+}
+
+.merineo-pb-settings .merineo-pb-style-preview--square {
+    border-radius: 3px;
+}
+
+.merineo-pb-settings .merineo-pb-style-preview--rounded {
+    border-radius: 8px;
+}
+
+.merineo-pb-settings .merineo-pb-style-preview--circle {
+    border-radius: 999px;
+    width: 42px;
+    height: 42px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+/* Vertical ribbon preview */
+.merineo-pb-settings .merineo-pb-style-preview--ribbon-vertical {
+    border-radius: 6px 6px 0 0;
+    position: relative;
+}
+.merineo-pb-settings .merineo-pb-style-preview--ribbon-vertical::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -10px;
+    margin: 0 auto;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 11px 0 11px;
+    border-color: #2563eb transparent transparent transparent;
+}
+
+/* Corner ribbon preview – obdĺžnik so špicom zo spodného pravého rohu */
+.merineo-pb-settings .merineo-pb-style-preview--ribbon-corner {
+    position: relative;
+    border-radius: 4px;
+    overflow: visible;
+}
+
+.merineo-pb-settings .merineo-pb-style-preview--ribbon-corner::after {
+    content: "";
+    position: absolute;
+    right: 8px;          /* kúsok od pravého okraja */
+    bottom: -7px;        /* špic pod spodnou hranou */
+    width: 0;
+    height: 0;
+    border-style: solid;
+    /*   top  right bottom left */
+    border-width: 7px 7px 0 7px;
+    border-color: #2563eb transparent transparent transparent;
+}
+
+/* Tag preview – obdĺžnik so špicom doprava v strede */
+.merineo-pb-settings .merineo-pb-style-preview--tag {
+    position: relative;
+    border-radius: 4px 0 0 4px;
+    overflow: visible;
+}
+
+/* Extra right padding only for Tag style card */
+.merineo-pb-settings label[for="merineo_pb_style_tag"] {
+    padding-right: 20px;
+}
+
+.merineo-pb-settings .merineo-pb-style-preview--tag::after {
+    content: "";
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 25px 0 25px 15px;
+    border-color: transparent transparent transparent #2563eb;
+}
+
+/* Style toggles row */
+.merineo-pb-settings .merineo-pb-style-toggles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+    margin-top: 8px;
+}
+
+/* Layout radio group */
+.merineo-pb-settings .merineo-pb-radio-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.merineo-pb-settings .merineo-pb-radio-group-label {
+    font-size: 12px;
+    color: #4b5563;
+    margin-right: 4px;
+}
+
+.merineo-pb-settings .merineo-pb-radio-pill {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.merineo-pb-settings .merineo-pb-radio-pill input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.merineo-pb-settings .merineo-pb-radio-pill > span {
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    font-size: 11px;
+}
+
+.merineo-pb-settings .merineo-pb-radio-pill input[type="radio"]:checked + span {
+    border-color: #2563eb;
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
