@@ -37,7 +37,10 @@ class Menu {
      * @link https://developer.wordpress.org/reference/functions/add_submenu_page/
      */
     public function register_menu(): void {
-        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+        // Allow both WooCommerce managers and full admins to see the menu.
+        $capability = 'manage_woocommerce';
+
+        if ( ! current_user_can( $capability ) && ! current_user_can( 'manage_options' ) ) {
             return;
         }
 
