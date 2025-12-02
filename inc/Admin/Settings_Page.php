@@ -162,7 +162,9 @@ class Settings_Page {
             wp_die( esc_html__( 'You do not have permission to access this page.', 'merineo-product-badges' ) );
         }
 
-        $options = $this->settings->all();
+        // Per-site option name (must match Settings::register()).
+        $option_name = Settings::get_option_name_for_current_site();
+        $options     = $this->settings->all();
 
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only.
         $section = isset( $_GET['section'] ) ? sanitize_key( (string) wp_unslash( $_GET['section'] ) ) : 'layout';
@@ -206,20 +208,20 @@ class Settings_Page {
                     <?php
                     switch ( $section ) {
                         case 'automatic':
-                            $this->render_section_automatic( $options );
+                            $this->render_section_automatic( $options, $option_name );
                             break;
 
                         case 'design':
-                            $this->render_section_design( $options );
+                            $this->render_section_design( $options, $option_name );
                             break;
 
                         case 'advanced':
-                            $this->render_section_advanced( $options );
+                            $this->render_section_advanced( $options, $option_name );
                             break;
 
                         case 'layout':
                         default:
-                            $this->render_section_layout( $options );
+                            $this->render_section_layout( $options, $option_name );
                             break;
                     }
                     ?>
@@ -234,11 +236,12 @@ class Settings_Page {
     /**
      * Layout & Placement section.
      *
-     * @param array<string,mixed> $options Options.
+     * @param array<string,mixed> $options     Options.
+     * @param string              $option_name Option name for current site.
      *
      * @return void
      */
-    private function render_section_layout( array $options ): void {
+    private function render_section_layout( array $options, string $option_name ): void {
         ?>
         <div class="merineo-pb-card">
             <h2><?php esc_html_e( 'Global toggle', 'merineo-product-badges' ); ?></h2>
@@ -248,12 +251,12 @@ class Settings_Page {
             <label class="merineo-pb-toggle">
                 <input
                         type="hidden"
-                        name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][enabled]"
+                        name="<?php echo esc_attr( $option_name ); ?>[general][enabled]"
                         value="0"
                 />
                 <input
                         type="checkbox"
-                        name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][enabled]"
+                        name="<?php echo esc_attr( $option_name ); ?>[general][enabled]"
                         value="1"
                         <?php checked( ! empty( $options['general']['enabled'] ) ); ?>
                 />
@@ -270,9 +273,9 @@ class Settings_Page {
             <table class="form-table merineo-pb-table">
                 <tbody>
                 <?php
-                $this->render_placement_row( 'single', __( 'Single product page', 'merineo-product-badges' ), $options );
-                $this->render_placement_row( 'loop', __( 'Product archive / category', 'merineo-product-badges' ), $options );
-                $this->render_placement_row( 'custom', __( 'Custom hook', 'merineo-product-badges' ), $options );
+                $this->render_placement_row( 'single', __( 'Single product page', 'merineo-product-badges' ), $options, $option_name );
+                $this->render_placement_row( 'loop', __( 'Product archive / category', 'merineo-product-badges' ), $options, $option_name );
+                $this->render_placement_row( 'custom', __( 'Custom hook', 'merineo-product-badges' ), $options, $option_name );
                 ?>
                 </tbody>
             </table>
@@ -283,11 +286,12 @@ class Settings_Page {
     /**
      * Automatic Badges section (accordion).
      *
-     * @param array<string,mixed> $options Options.
+     * @param array<string,mixed> $options     Options.
+     * @param string              $option_name Option name for current site.
      *
      * @return void
      */
-    private function render_section_automatic( array $options ): void {
+    private function render_section_automatic( array $options, string $option_name ): void {
         ?>
         <div class="merineo-pb-card">
             <h2><?php esc_html_e( 'Automatic badges', 'merineo-product-badges' ); ?></h2>
@@ -296,13 +300,13 @@ class Settings_Page {
             </p>
 
             <?php
-            $this->render_auto_badge_accordion( 'new', __( 'New', 'merineo-product-badges' ), $options['automatic']['new'], true, false );
-            $this->render_auto_badge_accordion( 'featured', __( 'Recommended', 'merineo-product-badges' ), $options['automatic']['featured'] );
-            $this->render_auto_badge_accordion( 'sale', __( 'Sale', 'merineo-product-badges' ), $options['automatic']['sale'], false, true );
-            $this->render_auto_badge_accordion( 'outofstock', __( 'Out of stock', 'merineo-product-badges' ), $options['automatic']['outofstock'] );
-            $this->render_auto_badge_accordion( 'instock', __( 'In stock', 'merineo-product-badges' ), $options['automatic']['instock'] );
-            $this->render_auto_badge_accordion( 'backorder', __( 'Backorder', 'merineo-product-badges' ), $options['automatic']['backorder'] );
-            $this->render_auto_badge_accordion( 'bestseller', __( 'Bestseller', 'merineo-product-badges' ), $options['automatic']['bestseller'], false, false, true );
+            $this->render_auto_badge_accordion( 'new', __( 'New', 'merineo-product-badges' ), $options['automatic']['new'], $option_name, true, false );
+            $this->render_auto_badge_accordion( 'featured', __( 'Recommended', 'merineo-product-badges' ), $options['automatic']['featured'], $option_name );
+            $this->render_auto_badge_accordion( 'sale', __( 'Sale', 'merineo-product-badges' ), $options['automatic']['sale'], $option_name, false, true );
+            $this->render_auto_badge_accordion( 'outofstock', __( 'Out of stock', 'merineo-product-badges' ), $options['automatic']['outofstock'], $option_name );
+            $this->render_auto_badge_accordion( 'instock', __( 'In stock', 'merineo-product-badges' ), $options['automatic']['instock'], $option_name );
+            $this->render_auto_badge_accordion( 'backorder', __( 'Backorder', 'merineo-product-badges' ), $options['automatic']['backorder'], $option_name );
+            $this->render_auto_badge_accordion( 'bestseller', __( 'Bestseller', 'merineo-product-badges' ), $options['automatic']['bestseller'], $option_name, false, false, true );
             ?>
 
             <p class="description merineo-pb-order-note">
@@ -317,11 +321,12 @@ class Settings_Page {
     /**
      * Design & Typography section.
      *
-     * @param array<string,mixed> $options Options.
+     * @param array<string,mixed> $options     Options.
+     * @param string              $option_name Option name for current site.
      *
      * @return void
      */
-    private function render_section_design( array $options ): void {
+    private function render_section_design( array $options, string $option_name ): void {
         $general = $options['general'];
         ?>
         <div class="merineo-pb-card">
@@ -336,7 +341,7 @@ class Settings_Page {
                             step="0.1"
                             min="8"
                             id="merineo_pb_font_size"
-                            name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][font_size]"
+                            name="<?php echo esc_attr( $option_name ); ?>[general][font_size]"
                             value="<?php echo esc_attr( (string) $general['font_size'] ); ?>"
                     />
                 </div>
@@ -349,7 +354,7 @@ class Settings_Page {
                             type="number"
                             step="0.1"
                             id="merineo_pb_letter_spacing"
-                            name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][letter_spacing]"
+                            name="<?php echo esc_attr( $option_name ); ?>[general][letter_spacing]"
                             value="<?php echo esc_attr( (string) $general['letter_spacing'] ); ?>"
                     />
                 </div>
@@ -360,7 +365,7 @@ class Settings_Page {
                     </label>
                     <select
                             id="merineo_pb_text_transform"
-                            name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][text_transform]"
+                            name="<?php echo esc_attr( $option_name ); ?>[general][text_transform]"
                     >
                         <option value="none" <?php selected( $general['text_transform'], 'none' ); ?>>
                             <?php esc_html_e( 'Normal', 'merineo-product-badges' ); ?>
@@ -377,7 +382,7 @@ class Settings_Page {
                     </label>
                     <select
                             id="merineo_pb_font_weight"
-                            name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][font_weight]"
+                            name="<?php echo esc_attr( $option_name ); ?>[general][font_weight]"
                     >
                         <option value="normal" <?php selected( $general['font_weight'], 'normal' ); ?>>
                             <?php esc_html_e( 'Normal', 'merineo-product-badges' ); ?>
@@ -392,12 +397,12 @@ class Settings_Page {
                     <label>
                         <input
                                 type="hidden"
-                                name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][shadow_enabled]"
+                                name="<?php echo esc_attr( $option_name ); ?>[general][shadow_enabled]"
                                 value="0"
                         />
                         <input
                                 type="checkbox"
-                                name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][shadow_enabled]"
+                                name="<?php echo esc_attr( $option_name ); ?>[general][shadow_enabled]"
                                 value="1"
                                 <?php checked( ! empty( $general['shadow_enabled'] ) ); ?>
                         />
@@ -436,7 +441,7 @@ class Settings_Page {
                         <input
                                 type="radio"
                                 id="<?php echo esc_attr( $id ); ?>"
-                                name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][style_variant]"
+                                name="<?php echo esc_attr( $option_name ); ?>[general][style_variant]"
                                 value="<?php echo esc_attr( $value ); ?>"
                                 <?php checked( $checked ); ?>
                         />
@@ -456,12 +461,12 @@ class Settings_Page {
                 <label class="merineo-pb-toggle">
                     <input
                             type="hidden"
-                            name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][style_outline]"
+                            name="<?php echo esc_attr( $option_name ); ?>[general][style_outline]"
                             value="0"
                     />
                     <input
                             type="checkbox"
-                            name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][style_outline]"
+                            name="<?php echo esc_attr( $option_name ); ?>[general][style_outline]"
                             value="1"
                             <?php checked( ! empty( $general['style_outline'] ) ); ?>
                     />
@@ -476,7 +481,7 @@ class Settings_Page {
                     <label class="merineo-pb-radio-pill">
                         <input
                                 type="radio"
-                                name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][layout]"
+                                name="<?php echo esc_attr( $option_name ); ?>[general][layout]"
                                 value="inline"
                                 <?php checked( 'inline' === $layout ); ?>
                         />
@@ -486,7 +491,7 @@ class Settings_Page {
                     <label class="merineo-pb-radio-pill">
                         <input
                                 type="radio"
-                                name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][layout]"
+                                name="<?php echo esc_attr( $option_name ); ?>[general][layout]"
                                 value="stacked"
                                 <?php checked( 'stacked' === $layout ); ?>
                         />
@@ -501,11 +506,12 @@ class Settings_Page {
     /**
      * Advanced & Custom CSS section.
      *
-     * @param array<string,mixed> $options Options.
+     * @param array<string,mixed> $options     Options.
+     * @param string              $option_name Option name for current site.
      *
      * @return void
      */
-    private function render_section_advanced( array $options ): void {
+    private function render_section_advanced( array $options, string $option_name ): void {
         ?>
         <div class="merineo-pb-card">
             <h2><?php esc_html_e( 'Custom CSS (scoped)', 'merineo-product-badges' ); ?></h2>
@@ -546,7 +552,7 @@ class Settings_Page {
 
             <textarea
                     id="merineo_pb_custom_css"
-                    name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[css][custom]"
+                    name="<?php echo esc_attr( $option_name ); ?>[css][custom]"
                     rows="12"
                     class="large-text code"
             ><?php echo esc_textarea( (string) $options['css']['custom'] ); ?></textarea>
@@ -557,13 +563,14 @@ class Settings_Page {
     /**
      * Placement row (single, loop, custom).
      *
-     * @param string              $key     Area key.
-     * @param string              $label   Human label.
-     * @param array<string,mixed> $options Options.
+     * @param string              $key         Area key.
+     * @param string              $label       Human label.
+     * @param array<string,mixed> $options     Options.
+     * @param string              $option_name Option name for current site.
      *
      * @return void
      */
-    private function render_placement_row( string $key, string $label, array $options ): void {
+    private function render_placement_row( string $key, string $label, array $options, string $option_name ): void {
         $area = $options['general'][ $key ];
         ?>
         <tr>
@@ -573,7 +580,7 @@ class Settings_Page {
                     <div class="merineo-pb-placement-col">
                         <label>
                             <span class="merineo-pb-label"><?php esc_html_e( 'Hook', 'merineo-product-badges' ); ?></span>
-                            <select name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][<?php echo esc_attr( $key ); ?>][hook]">
+                            <select name="<?php echo esc_attr( $option_name ); ?>[general][<?php echo esc_attr( $key ); ?>][hook]">
                                 <option value=""><?php esc_html_e( 'Custom hook only', 'merineo-product-badges' ); ?></option>
                                 <?php foreach ( $this->get_standard_hooks( $key ) as $hook => $hook_label ) : ?>
                                     <option value="<?php echo esc_attr( $hook ); ?>" <?php selected( $area['hook'], $hook ); ?>>
@@ -589,7 +596,7 @@ class Settings_Page {
                             <input
                                     type="text"
                                     class="regular-text"
-                                    name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][<?php echo esc_attr( $key ); ?>][custom_hook]"
+                                    name="<?php echo esc_attr( $option_name ); ?>[general][<?php echo esc_attr( $key ); ?>][custom_hook]"
                                     value="<?php echo esc_attr( (string) $area['custom_hook'] ); ?>"
                             />
                         </label>
@@ -599,7 +606,7 @@ class Settings_Page {
                             <span class="merineo-pb-label"><?php esc_html_e( 'Priority', 'merineo-product-badges' ); ?></span>
                             <input
                                     type="number"
-                                    name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][<?php echo esc_attr( $key ); ?>][priority]"
+                                    name="<?php echo esc_attr( $option_name ); ?>[general][<?php echo esc_attr( $key ); ?>][priority]"
                                     value="<?php echo esc_attr( (string) $area['priority'] ); ?>"
                                     min="1"
                             />
@@ -608,7 +615,7 @@ class Settings_Page {
                     <div class="merineo-pb-placement-col merineo-pb-placement-col--small">
                         <label>
                             <span class="merineo-pb-label"><?php esc_html_e( 'Alignment', 'merineo-product-badges' ); ?></span>
-                            <select name="<?php echo esc_attr( MERINEO_PB_OPTION_NAME ); ?>[general][<?php echo esc_attr( $key ); ?>][align]">
+                            <select name="<?php echo esc_attr( $option_name ); ?>[general][<?php echo esc_attr( $key ); ?>][align]">
                                 <option value="left" <?php selected( $area['align'], 'left' ); ?>>
                                     <?php esc_html_e( 'Left', 'merineo-product-badges' ); ?>
                                 </option>
@@ -641,17 +648,26 @@ class Settings_Page {
     /**
      * Render automatic badge accordion item.
      *
-     * @param string              $key        Badge key.
-     * @param string              $title      Section title.
-     * @param array<string,mixed> $badge      Badge data.
-     * @param bool                $with_days  Whether to display "days" input (New).
-     * @param bool                $with_sale  Whether to render sale mode selector.
-     * @param bool                $with_count Whether to display count (Bestseller).
+     * @param string              $key         Badge key.
+     * @param string              $title       Section title.
+     * @param array<string,mixed> $badge       Badge data.
+     * @param string              $option_name Option name for current site.
+     * @param bool                $with_days   Whether to display "days" input (New).
+     * @param bool                $with_sale   Whether to render sale mode selector.
+     * @param bool                $with_count  Whether to display count (Bestseller).
      *
      * @return void
      */
-    private function render_auto_badge_accordion( string $key, string $title, array $badge, bool $with_days = false, bool $with_sale = false, bool $with_count = false ): void {
-        $name_prefix = MERINEO_PB_OPTION_NAME . '[automatic][' . $key . ']';
+    private function render_auto_badge_accordion(
+            string $key,
+            string $title,
+            array $badge,
+            string $option_name,
+            bool $with_days = false,
+            bool $with_sale = false,
+            bool $with_count = false
+    ): void {
+        $name_prefix = $option_name . '[automatic][' . $key . ']';
         $is_enabled  = ! empty( $badge['enabled'] );
         ?>
         <div class="merineo-pb-accordion <?php echo $is_enabled ? 'is-open' : ''; ?>">

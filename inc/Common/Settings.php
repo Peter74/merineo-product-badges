@@ -17,6 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Handles plugin settings registration, defaults and sanitization.
  *
  * Settings are stored as a single option array under MERINEO_PB_OPTION_NAME.
+ * In multisite environments the option name is suffixed with the current
+ * blog ID to keep settings isolated per site.
+ *
  * The settings page is split into multiple tabs, so the sanitization callback
  * must support partial updates (only fields from the current tab are posted).
  */
@@ -28,6 +31,21 @@ class Settings {
      * @var string
      */
     private string $option_name = MERINEO_PB_OPTION_NAME;
+
+    /**
+     * Constructor.
+     *
+     * Initializes per-site option name so that each site in a multisite
+     * network uses its own settings row.
+     *
+     * @return void
+     *
+     * @link https://developer.wordpress.org/reference/functions/get_current_blog_id/
+     * @link https://developer.wordpress.org/reference/functions/is_multisite/
+     */
+    public function __construct() {
+        $this->option_name = self::get_option_name_for_current_site();
+    }
 
     /**
      * Ensure default options are present on first run.
@@ -291,6 +309,27 @@ class Settings {
         }
 
         return $target;
+    }
+
+    /**
+     * Get option name for current site.
+     *
+     * This keeps settings isolated per site in a multisite network.
+     *
+     * @return string
+     *
+     * @link https://developer.wordpress.org/reference/functions/get_current_blog_id/
+     * @link https://developer.wordpress.org/reference/functions/is_multisite/
+     */
+    public static function get_option_name_for_current_site(): string {
+        $name    = MERINEO_PB_OPTION_NAME;
+        $blog_id = (int) get_current_blog_id();
+
+        if ( is_multisite() && $blog_id > 0 ) {
+            $name .= '_' . $blog_id;
+        }
+
+        return $name;
     }
 
     /**
