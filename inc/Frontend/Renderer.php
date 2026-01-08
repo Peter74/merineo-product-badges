@@ -309,6 +309,7 @@ class Renderer {
 
         $list = array_merge( $list, $this->get_featured_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_sale_badge( $product, $options ) );
+        $list = array_merge( $list, $this->get_multipack_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_new_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_bestseller_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_stock_badges( $product, $options ) );
@@ -695,6 +696,77 @@ class Renderer {
         }
 
         return $badges;
+    }
+
+    /**
+     * Multipack badge – integration with Merineo Multipack Discount.
+     *
+     * @param \WC_Product         $product Product instance.
+     * @param array<string,mixed> $options All plugin options.
+     *
+     * @return array<int,array<string,string>>
+     */
+    private function get_multipack_badge( \WC_Product $product, array $options ): array {
+        // If multipack plugin is not active, skip quietly.
+        if ( ! class_exists( '\Merineo\Multipack_Discount\Common\Multipack_Helper' ) ) {
+            return [];
+        }
+
+        $conf = $options['automatic']['multipack'] ?? null;
+        if ( ! is_array( $conf ) || empty( $conf['enabled'] ) ) {
+            return [];
+        }
+
+        $product_id = $product->get_id();
+
+        // Check if product has active multipacks.
+        $multipacks = \Merineo\Multipack_Discount\Common\Multipack_Helper::get_active_multipacks_for_product( $product_id );
+        if ( ! is_array( $multipacks ) || empty( $multipacks ) ) {
+            return [];
+        }
+
+        // Get maximum discount info (normalised to percent).
+        $max = \Merineo\Multipack_Discount\Common\Multipack_Helper::get_max_discount_for_product( $product_id );
+        if ( ! is_array( $max ) ) {
+            return [];
+        }
+
+        $percent = isset( $max['percent'] ) ? (float) $max['percent'] : 0.0;
+        if ( $percent <= 0 ) {
+            return [];
+        }
+
+        // Apply "Minimum discount to show badge" threshold (in percent).
+        $min_discount = isset( $conf['min_discount'] ) ? (float) $conf['min_discount'] : 0.0;
+        if ( $min_discount > 0 && $percent < $min_discount ) {
+            return [];
+        }
+
+        // Prepare label with {max_discount} placeholder support.
+        $label = (string) ( $conf['label'] ?? '' );
+        if ( '' === $label ) {
+            $label = __( 'Multipack', 'merineo-product-badges' );
+        }
+
+        if ( false !== strpos( $label, '{max_discount}' ) ) {
+            $placeholder_value = \Merineo\Multipack_Discount\Common\Multipack_Helper::format_max_discount_placeholder( $product_id );
+            if ( '' !== $placeholder_value ) {
+                $label = str_replace( '{max_discount}', $placeholder_value, $label );
+            } else {
+                // If we cannot format the value, just remove the placeholder.
+                $label = str_replace( '{max_discount}', '', $label );
+            }
+        }
+
+        return [
+            [
+                'type'       => 'multipack',
+                'source'     => 'auto',
+                'label'      => $label,
+                'bg_color'   => (string) ( $conf['bg_color'] ?? '' ),
+                'text_color' => (string) ( $conf['text_color'] ?? '' ),
+            ],
+        ];
     }
 
     /**

@@ -1,384 +1,415 @@
+# Copyright (C) 2026 Merineo s.r.o. (PeterB)
+# This file is distributed under the same license as the Merineo Product Badges plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Merineo Product Badges 1.0.0\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-02 00:00+0000\n"
-"PO-Revision-Date: 2025-12-02 00:00+0000\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: \n"
+"Project-Id-Version: Merineo Product Badges 1.0.5\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/merineo-product-badges\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-01-08T22:29:09+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: merineo-product-badges\n"
-"X-Generator: ChatGPT (Merineo Product Badges)\n"
 
+#. Plugin Name of the plugin
 #: merineo-product-badges.php
+#: inc/Admin/Settings_Page.php:186
 msgid "Merineo Product Badges"
 msgstr ""
 
+#. Plugin URI of the plugin
+#. Author URI of the plugin
 #: merineo-product-badges.php
-msgid "Product Badges"
+msgid "https://merineo.sk/"
 msgstr ""
 
-#: inc/Admin/Menu.php
-msgid "Settings"
+#. Description of the plugin
+#: merineo-product-badges.php
+msgid "Flexible WooCommerce product badges with global, category, and per-product configuration."
 msgstr ""
 
-#: inc/Admin/Menu.php
-msgid "Merineo"
+#. Author of the plugin
+#: merineo-product-badges.php
+msgid "Merineo s.r.o. (PeterB)"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Merineo Product Badges Settings"
+#: inc/Admin/Category_Meta.php:131
+#: inc/Admin/Product_Meta.php:131
+msgid "No badges yet. Click \"Add badge\" to create one."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Layout & Placement"
+#: inc/Admin/Category_Meta.php:132
+#: inc/Admin/Product_Meta.php:132
+#: inc/Admin/Settings_Page.php:461
+msgid "Badge"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Design"
+#: inc/Admin/Category_Meta.php:133
+#: inc/Admin/Category_Meta.php:134
+#: inc/Admin/Product_Meta.php:133
+#: inc/Admin/Product_Meta.php:134
+msgid "Text for badge"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Automatic Badges"
+#: inc/Admin/Category_Meta.php:135
+#: inc/Admin/Product_Meta.php:135
+msgid "Background"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Custom CSS"
+#: inc/Admin/Category_Meta.php:136
+#: inc/Admin/Product_Meta.php:136
+msgid "Text"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "General settings"
+#: inc/Admin/Category_Meta.php:159
+#: inc/Admin/Category_Meta.php:189
+#: inc/Admin/Product_Meta.php:85
+msgid "Merineo Badges"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Enable product badges"
+#: inc/Admin/Category_Meta.php:161
+msgid "Badges configured here will be applied to all products assigned to this category."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Turn the whole badge functionality on or off."
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Single product placement"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Product archive placement"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Custom placement"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Hook"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Custom hook"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Hook priority"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Alignment"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Left"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Right"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Layout"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Inline"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Stacked"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Style variant"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Pill"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Square"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Rounded"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Circle"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Vertical ribbon"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Corner ribbon"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Tag"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Outline style"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Render badges with outline instead of solid fill."
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Badge typography"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Font size (px)"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Text transform"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Normal"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Uppercase"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Font weight"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Normal weight"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Bold"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Letter spacing (px)"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Shadow"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Enable subtle shadow on badges"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Badge preview"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Automatic badge: New"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Automatic badge: Featured"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Automatic badge: Sale"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Automatic badge: Stock"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Automatic badge: Bestseller"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Enabled"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Label"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Background color"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Text color"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Show as"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Hidden"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Text label"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Percentage"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Saved amount"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Days to show as new"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Number of days after publication when product is still considered new."
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Top bestseller count"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Number of top selling products that should receive the bestseller badge."
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Custom CSS for badges"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "All custom CSS is automatically scoped under the badges wrapper to avoid breaking your theme."
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "CSS helper"
-msgstr ""
-
-#: inc/Admin/Settings_Page.php
-msgid "Click to copy selector"
-msgstr ""
-
-#: inc/Admin/Category_Meta.php
-msgid "Category badges"
-msgstr ""
-
-#: inc/Admin/Category_Meta.php
-msgid "Configure badges that will be applied to all products in this category."
-msgstr ""
-
-#: inc/Admin/Category_Meta.php
-#: inc/Admin/Product_Meta.php
+#: inc/Admin/Category_Meta.php:166
+#: inc/Admin/Category_Meta.php:199
+#: inc/Admin/Product_Meta.php:171
 msgid "Add badge"
 msgstr ""
 
-#: inc/Admin/Category_Meta.php
-#: inc/Admin/Product_Meta.php
-msgid "Remove badge"
+#: inc/Admin/Category_Meta.php:194
+msgid "Badges configured here will be applied to all products assigned to this category. Products also inherit global and product-specific badges."
 msgstr ""
 
-#: inc/Admin/Product_Meta.php
-msgid "Product badges"
+#: inc/Admin/Menu.php:65
+#: inc/Admin/Menu.php:66
+#: inc/Admin/Menu.php:90
+msgid "Merineo"
 msgstr ""
 
-#: inc/Admin/Product_Meta.php
-msgid "Configure badges specific to this product."
+#: inc/Admin/Menu.php:78
+#: inc/Admin/Menu.php:79
+msgid "Product Badges"
 msgstr ""
 
-#: inc/Admin/Product_Meta.php
-msgid "No badges yet. Click the button below to add your first badge."
+#: inc/Admin/Menu.php:88
+#: inc/Admin/Settings_Page.php:162
+msgid "You do not have permission to access this page."
 msgstr ""
 
-#: inc/Admin/Product_Meta.php
-#: inc/Admin/Category_Meta.php
-msgid "Custom badge"
+#: inc/Admin/Product_Meta.php:166
+msgid "Custom badges for this product. Product also inherits global and category badges."
 msgstr ""
 
-#: inc/Admin/Product_Meta.php
-#: inc/Admin/Category_Meta.php
-msgid "Badge text"
+#: inc/Admin/Settings_Page.php:147
+msgid "Copied"
 msgstr ""
 
-#: inc/Admin/Product_Meta.php
-#: inc/Admin/Category_Meta.php
-msgid "Badge background color"
+#: inc/Admin/Settings_Page.php:177
+msgid "Layout & Placement"
 msgstr ""
 
-#: inc/Admin/Product_Meta.php
-#: inc/Admin/Category_Meta.php
-msgid "Badge text color"
+#: inc/Admin/Settings_Page.php:178
+msgid "Automatic Badges"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Settings saved."
+#: inc/Admin/Settings_Page.php:179
+msgid "Design & Typography"
 msgstr ""
 
-#: inc/Frontend/Renderer.php
+#: inc/Admin/Settings_Page.php:180
+msgid "Advanced & Custom CSS"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:247
+msgid "Global toggle"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:249
+msgid "Turn the entire product badges feature on or off."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:263
+msgid "Enable product badges"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:268
+msgid "Placement"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:270
+msgid "Choose where badges should appear in single product view, product archives and custom locations."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:276
+msgid "Single product page"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:277
+msgid "Product archive / category"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:278
+msgid "Custom hook"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:297
+msgid "Automatic badges"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:299
+msgid "Configure rules-based badges like New, Recommended, Sale, stock statuses and Bestsellers."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:303
+#: inc/Common/Settings.php:388
 msgid "New"
 msgstr ""
 
-#: inc/Frontend/Renderer.php
-msgid "Featured"
+#: inc/Admin/Settings_Page.php:304
+#: inc/Common/Settings.php:395
+msgid "Recommended"
 msgstr ""
 
-#: inc/Frontend/Renderer.php
+#: inc/Admin/Settings_Page.php:305
+#: inc/Common/Settings.php:401
 msgid "Sale"
 msgstr ""
 
-#: inc/Frontend/Renderer.php
-msgid "In stock"
-msgstr ""
-
-#: inc/Frontend/Renderer.php
+#: inc/Admin/Settings_Page.php:306
+#: inc/Common/Settings.php:408
 msgid "Out of stock"
 msgstr ""
 
-#: inc/Frontend/Renderer.php
-msgid "On backorder"
+#: inc/Admin/Settings_Page.php:307
+#: inc/Common/Settings.php:414
+msgid "In stock"
 msgstr ""
 
-#: inc/Frontend/Renderer.php
+#: inc/Admin/Settings_Page.php:308
+#: inc/Common/Settings.php:420
+msgid "Backorder"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:309
+#: inc/Common/Settings.php:426
 msgid "Bestseller"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Sale badge mode"
+#: inc/Admin/Settings_Page.php:313
+#: inc/Common/Settings.php:433
+#: inc/Frontend/Renderer.php:748
+msgid "Multipack"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Use WooCommerce price formatting for the saved amount."
+#: inc/Admin/Settings_Page.php:322
+msgid "Badges are rendered in this order (when active): Recommended, Sale, Multipack, New, Category, Product-specific."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Global settings for all badges."
+#: inc/Admin/Settings_Page.php:344
+msgid "Typography"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php
-msgid "Preview"
+#: inc/Admin/Settings_Page.php:348
+msgid "Font size (px)"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:362
+msgid "Letter spacing (px)"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:375
+msgid "Text transform"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:382
+#: inc/Admin/Settings_Page.php:399
+msgid "Normal"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:385
+msgid "Uppercase"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:392
+msgid "Font weight"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:402
+msgid "Bold"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:420
+msgid "Enable subtle shadow on badges"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:427
+msgid "Badge style & layout"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:429
+msgid "Choose overall shape for badges, outline vs solid, and whether badges are displayed inline or stacked."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:438
+msgid "Compact pill"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:439
+msgid "Square"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:440
+msgid "Rounded rectangle"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:441
+msgid "Circle"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:442
+msgid "Vertical ribbon"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:443
+msgid "Corner ribbon"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:444
+msgid "Tag"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:484
+msgid "Outline style"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:489
+msgid "Badge layout"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:499
+msgid "Inline"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:509
+msgid "Stacked"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:528
+msgid "Custom CSS (scoped)"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:530
+msgid "CSS is scoped under the .merineo-badges-scope wrapper to minimize the risk of breaking your theme."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:534
+msgid "Useful selectors"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:593
+msgid "Hook"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:595
+msgid "Custom hook only"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:606
+msgid "Custom hook name"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:617
+msgid "Priority"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:628
+msgid "Alignment"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:631
+msgid "Left"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:634
+msgid "Right"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:643
+msgid "Single product hooks control badges on the product detail page."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:647
+msgid "Loop hooks control badges on shop, category and archive listings."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:651
+msgid "Use custom hooks for advanced placements in your theme or custom templates."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:707
+msgid "Enabled"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:716
+msgid "Toggle badge settings"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:726
+msgid "Label"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:738
+msgid "You can use {max_discount} in the label to insert the maximum multipack discount (e.g. \"-20%\" or \"10 €\")."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:752
+msgid "Minimum discount to show badge (%)"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:770
+msgid "Badge is only shown if the effective maximum multipack discount (in percent) is greater or equal to this value."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:781
+msgid "Background color"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:792
+msgid "Text color"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:806
+msgid "Days visible after product creation"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:821
+msgid "Sale display mode"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:825
+msgid "Do not display"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:828
+msgid "Label only"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:831
+msgid "Discount percent (e.g. -15 %)"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:834
+msgid "Saved amount (e.g. -5€)"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:844
+msgid "Top bestseller products"
+msgstr ""
+
+#: merineo-product-badges.php:43
+msgid "Settings"
 msgstr ""

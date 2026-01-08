@@ -307,11 +307,22 @@ class Settings_Page {
             $this->render_auto_badge_accordion( 'instock', __( 'In stock', 'merineo-product-badges' ), $options['automatic']['instock'], $option_name );
             $this->render_auto_badge_accordion( 'backorder', __( 'Backorder', 'merineo-product-badges' ), $options['automatic']['backorder'], $option_name );
             $this->render_auto_badge_accordion( 'bestseller', __( 'Bestseller', 'merineo-product-badges' ), $options['automatic']['bestseller'], $option_name, false, false, true );
+            if ( class_exists( '\Merineo\Multipack_Discount\Common\Multipack_Helper' ) ) {
+                $this->render_auto_badge_accordion(
+                        'multipack',
+                        __( 'Multipack', 'merineo-product-badges' ),
+                        $options['automatic']['multipack'],
+                        $option_name
+                );
+            }
             ?>
 
             <p class="description merineo-pb-order-note">
                 <?php
-                esc_html_e( 'Badges are rendered in this order (when active): Recommended, Sale, New, Category, Product-specific.', 'merineo-product-badges' );
+                esc_html_e(
+                        'Badges are rendered in this order (when active): Recommended, Sale, Multipack, New, Category, Product-specific.',
+                        'merineo-product-badges'
+                );
                 ?>
             </p>
         </div>
@@ -701,7 +712,9 @@ class Settings_Page {
                             aria-expanded="<?php echo $is_enabled ? 'true' : 'false'; ?>"
                     >
                         <span class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></span>
-                        <span class="screen-reader-text"><?php esc_html_e( 'Toggle badge settings', 'merineo-product-badges' ); ?></span>
+                        <span class="screen-reader-text">
+                            <?php esc_html_e( 'Toggle badge settings', 'merineo-product-badges' ); ?>
+                        </span>
                     </button>
                 </div>
             </div>
@@ -709,7 +722,9 @@ class Settings_Page {
             <div class="merineo-pb-accordion-body">
                 <table class="form-table" role="presentation">
                     <tr>
-                        <th scope="row"><label><?php esc_html_e( 'Label', 'merineo-product-badges' ); ?></label></th>
+                        <th scope="row">
+                            <label><?php esc_html_e( 'Label', 'merineo-product-badges' ); ?></label>
+                        </th>
                         <td>
                             <input
                                     type="text"
@@ -717,8 +732,51 @@ class Settings_Page {
                                     name="<?php echo esc_attr( $name_prefix ); ?>[label]"
                                     value="<?php echo esc_attr( (string) $badge['label'] ); ?>"
                             />
+                            <?php if ( 'multipack' === $key ) : ?>
+                                <p class="description">
+                                    <?php
+                                    esc_html_e(
+                                            'You can use {max_discount} in the label to insert the maximum multipack discount (e.g. "-20%" or "10 €").',
+                                            'merineo-product-badges'
+                                    );
+                                    ?>
+                                </p>
+                            <?php endif; ?>
                         </td>
                     </tr>
+
+                    <?php if ( 'multipack' === $key ) : ?>
+                        <tr>
+                            <th scope="row">
+                                <label for="<?php echo esc_attr( $name_prefix . '_min_discount' ); ?>">
+                                    <?php esc_html_e( 'Minimum discount to show badge (%)', 'merineo-product-badges' ); ?>
+                                </label>
+                            </th>
+                            <td>
+                                <input
+                                        type="number"
+                                        step="0.1"
+                                        min="0"
+                                        id="<?php echo esc_attr( $name_prefix . '_min_discount' ); ?>"
+                                        name="<?php echo esc_attr( $name_prefix ); ?>[min_discount]"
+                                        value="<?php echo esc_attr(
+                                                isset( $badge['min_discount'] )
+                                                        ? (string) $badge['min_discount']
+                                                        : '0'
+                                        ); ?>"
+                                />
+                                <p class="description">
+                                    <?php
+                                    esc_html_e(
+                                            'Badge is only shown if the effective maximum multipack discount (in percent) is greater or equal to this value.',
+                                            'merineo-product-badges'
+                                    );
+                                    ?>
+                                </p>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+
                     <tr>
                         <th scope="row"><?php esc_html_e( 'Background color', 'merineo-product-badges' ); ?></th>
                         <td>

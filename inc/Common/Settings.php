@@ -227,7 +227,7 @@ class Settings {
         );
 
         // Other badges (some may have "count").
-        foreach ( [ 'featured', 'sale', 'outofstock', 'instock', 'backorder', 'bestseller' ] as $key ) {
+        foreach ( [ 'featured', 'sale', 'outofstock', 'instock', 'backorder', 'bestseller', 'multipack' ] as $key ) {
             $output['automatic'][ $key ] = $this->sanitize_auto_badge(
                 $automatic[ $key ] ?? [],
                 $defaults['automatic'][ $key ],
@@ -298,6 +298,19 @@ class Settings {
 
         $target['bg_color']   = $bg_color;
         $target['text_color'] = $text_color;
+
+        // New: min_discount support (used by "multipack" badge).
+        if ( isset( $defaults['min_discount'] ) ) {
+            $min_discount = isset( $src['min_discount'] )
+                ? (float) $src['min_discount']
+                : (float) $defaults['min_discount'];
+
+            if ( $min_discount < 0 ) {
+                $min_discount = 0.0;
+            }
+
+            $target['min_discount'] = $min_discount;
+        }
 
         // Extra numeric fields: "days" (for "new") or "count" (for "bestseller").
         if ( $has_extra && isset( $defaults['days'] ) ) {
@@ -414,6 +427,13 @@ class Settings {
                     'bg_color'   => '#d97706',
                     'text_color' => '#ffffff',
                     'count'      => 20,
+                ],
+                'multipack'  => [
+                    'enabled'    => true,
+                    'label'      => __( 'Multipack', 'merineo-product-badges' ),
+                    'bg_color'   => '#2563eb',
+                    'text_color' => '#ffffff',
+                    'min_discount' => 0, // minimum percent discount to show badge
                 ],
             ],
             'css'       => [

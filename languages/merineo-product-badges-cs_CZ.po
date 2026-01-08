@@ -5,10 +5,10 @@ msgstr ""
 "Project-Id-Version: Merineo Product Badges 1.0.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/merineo-product-badges\n"
 "POT-Creation-Date: 2026-01-08T22:29:09+00:00\n"
-"PO-Revision-Date: 2026-01-08 23:32+0100\n"
+"PO-Revision-Date: 2026-01-08 23:33+0100\n"
 "Last-Translator: \n"
-"Language-Team: Slovak <LL@li.org>\n"
-"Language: sk_SK\n"
+"Language-Team: Czech <LL@li.org>\n"
+"Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -30,7 +30,7 @@ msgstr "https://merineo.sk/"
 #. Description of the plugin
 #: merineo-product-badges.php
 msgid "Flexible WooCommerce product badges with global, category, and per-product configuration."
-msgstr "Flexibilné produktové odznaky pre WooCommerce s globálnym, kategóriovým a produktovým nastavením."
+msgstr "Flexibilní produktové štítky pro WooCommerce s globálním, kategoriovým a produktovým nastavením."
 
 #. Author of the plugin
 #: merineo-product-badges.php
@@ -39,21 +39,21 @@ msgstr "Merineo s.r.o. (PeterB)"
 
 #: inc/Admin/Category_Meta.php:131 inc/Admin/Product_Meta.php:131
 msgid "No badges yet. Click \"Add badge\" to create one."
-msgstr "Zatiaľ nemáte žiadne odznaky. Kliknite na „Pridať odznak“ a vytvorte prvý."
+msgstr "Zatím nemáte žádné štítky. Klikněte na „Přidat štítek“ a vytvořte první."
 
 #: inc/Admin/Category_Meta.php:132 inc/Admin/Product_Meta.php:132
 #: inc/Admin/Settings_Page.php:461
 msgid "Badge"
-msgstr "Odznak"
+msgstr "Štítek"
 
 #: inc/Admin/Category_Meta.php:133 inc/Admin/Category_Meta.php:134
 #: inc/Admin/Product_Meta.php:133 inc/Admin/Product_Meta.php:134
 msgid "Text for badge"
-msgstr "Text odznaku"
+msgstr "Text štítku"
 
 #: inc/Admin/Category_Meta.php:135 inc/Admin/Product_Meta.php:135
 msgid "Background"
-msgstr "Pozadie"
+msgstr "Pozadí"
 
 #: inc/Admin/Category_Meta.php:136 inc/Admin/Product_Meta.php:136
 msgid "Text"
@@ -62,20 +62,20 @@ msgstr "Text"
 #: inc/Admin/Category_Meta.php:159 inc/Admin/Category_Meta.php:189
 #: inc/Admin/Product_Meta.php:85
 msgid "Merineo Badges"
-msgstr "Merineo odznaky"
+msgstr "Merineo štítky"
 
 #: inc/Admin/Category_Meta.php:161
 msgid "Badges configured here will be applied to all products assigned to this category."
-msgstr "Odznaky nastavené tu sa použijú na všetky produkty priradené do tejto kategórie."
+msgstr "Štítky nastavené zde se použijí na všechny produkty přiřazené do této kategorie."
 
 #: inc/Admin/Category_Meta.php:166 inc/Admin/Category_Meta.php:199
 #: inc/Admin/Product_Meta.php:171
 msgid "Add badge"
-msgstr "Pridať odznak"
+msgstr "Přidat štítek"
 
 #: inc/Admin/Category_Meta.php:194
 msgid "Badges configured here will be applied to all products assigned to this category. Products also inherit global and product-specific badges."
-msgstr "Odznaky nastavené tu sa použijú na všetky produkty priradené do tejto kategórie. Produkty zároveň dedia globálne a produktové odznaky."
+msgstr "Štítky nastavené zde se použijí na všechny produkty přiřazené do této kategorie. Produkty také dědí globální a produktové štítky."
 
 #: inc/Admin/Menu.php:65 inc/Admin/Menu.php:66 inc/Admin/Menu.php:90
 msgid "Merineo"
@@ -83,55 +83,55 @@ msgstr "Merineo"
 
 #: inc/Admin/Menu.php:78 inc/Admin/Menu.php:79
 msgid "Product Badges"
-msgstr "Produktové odznaky"
+msgstr "Produktové štítky"
 
 #: inc/Admin/Menu.php:88 inc/Admin/Settings_Page.php:162
 msgid "You do not have permission to access this page."
-msgstr "Nemáte dostatočné oprávnenia na zobrazenie tejto stránky."
+msgstr "Nemáte dostatečná oprávnění pro zobrazení této stránky."
 
 #: inc/Admin/Product_Meta.php:166
 msgid "Custom badges for this product. Product also inherits global and category badges."
-msgstr "Vlastné odznaky pre tento produkt. Produkt tiež dedí globálne a kategóriové odznaky."
+msgstr "Vlastní štítky pro tento produkt. Produkt také dědí globální a kategoriové štítky."
 
 #: inc/Admin/Settings_Page.php:147
 msgid "Copied"
-msgstr "Skopírované"
+msgstr "Zkopírováno"
 
 #: inc/Admin/Settings_Page.php:177
 msgid "Layout & Placement"
-msgstr "Rozloženie a umiestnenie"
+msgstr "Rozložení a umístění"
 
 #: inc/Admin/Settings_Page.php:178
 msgid "Automatic Badges"
-msgstr "Automatické odznaky"
+msgstr "Automatické štítky"
 
 #: inc/Admin/Settings_Page.php:179
 msgid "Design & Typography"
-msgstr "Dizajn a typografia"
+msgstr "Design a typografie"
 
 #: inc/Admin/Settings_Page.php:180
 msgid "Advanced & Custom CSS"
-msgstr "Pokročilé & vlastné CSS"
+msgstr "Pokročilé & vlastní CSS"
 
 #: inc/Admin/Settings_Page.php:247
 msgid "Global toggle"
-msgstr "Globálne zapnutie"
+msgstr "Globální přepínač"
 
 #: inc/Admin/Settings_Page.php:249
 msgid "Turn the entire product badges feature on or off."
-msgstr "Zapnúť alebo vypnúť celú funkcionalitu produktových odznakov."
+msgstr "Zapněte nebo vypněte celou funkcionalitu produktových štítků."
 
 #: inc/Admin/Settings_Page.php:263
 msgid "Enable product badges"
-msgstr "Povoliť produktové odznaky"
+msgstr "Povolit produktové štítky"
 
 #: inc/Admin/Settings_Page.php:268
 msgid "Placement"
-msgstr "Umiestnenie"
+msgstr "Umístění"
 
 #: inc/Admin/Settings_Page.php:270
 msgid "Choose where badges should appear in single product view, product archives and custom locations."
-msgstr "Vyberte, kde sa majú odznaky zobrazovať na stránke produktu, v archívoch produktov a na vlastných umiestneniach."
+msgstr "Vyberte, kde se mají štítky zobrazovat na stránce produktu, v archivech produktů a na vlastních umístěních."
 
 #: inc/Admin/Settings_Page.php:276
 msgid "Single product page"
@@ -139,19 +139,19 @@ msgstr "Stránka detailu produktu"
 
 #: inc/Admin/Settings_Page.php:277
 msgid "Product archive / category"
-msgstr "Archív produktov / kategória"
+msgstr "Archiv produktů / kategorie"
 
 #: inc/Admin/Settings_Page.php:278
 msgid "Custom hook"
-msgstr "Vlastný hook"
+msgstr "Vlastní hook"
 
 #: inc/Admin/Settings_Page.php:297
 msgid "Automatic badges"
-msgstr "Automatické odznaky"
+msgstr "Automatické štítky"
 
 #: inc/Admin/Settings_Page.php:299
 msgid "Configure rules-based badges like New, Recommended, Sale, stock statuses and Bestsellers."
-msgstr "Nastavte pravidlové odznaky ako Novinka, Odporúčané, Zľava, stavy skladu a Najpredávanejšie."
+msgstr "Nastavte pravidlové štítky jako Novinka, Doporučené, Sleva, stavy skladu a Nejprodávanější."
 
 #: inc/Admin/Settings_Page.php:303 inc/Common/Settings.php:388
 msgid "New"
@@ -159,19 +159,19 @@ msgstr "Novinka"
 
 #: inc/Admin/Settings_Page.php:304 inc/Common/Settings.php:395
 msgid "Recommended"
-msgstr "Odporúčané"
+msgstr "Doporučené"
 
 #: inc/Admin/Settings_Page.php:305 inc/Common/Settings.php:401
 msgid "Sale"
-msgstr "Zľava"
+msgstr "Sleva"
 
 #: inc/Admin/Settings_Page.php:306 inc/Common/Settings.php:408
 msgid "Out of stock"
-msgstr "Vypredané"
+msgstr "Vyprodáno"
 
 #: inc/Admin/Settings_Page.php:307 inc/Common/Settings.php:414
 msgid "In stock"
-msgstr "Skladom"
+msgstr "Skladem"
 
 #: inc/Admin/Settings_Page.php:308 inc/Common/Settings.php:420
 msgid "Backorder"
@@ -179,44 +179,44 @@ msgstr "Na objednávku"
 
 #: inc/Admin/Settings_Page.php:309 inc/Common/Settings.php:426
 msgid "Bestseller"
-msgstr "Najpredávanejší"
+msgstr "Nejprodávanější"
 
 #: inc/Admin/Settings_Page.php:313 inc/Common/Settings.php:433
 #: inc/Frontend/Renderer.php:748
 msgid "Multipack"
-msgstr "Multibalenie"
+msgstr "Multipack"
 
 #: inc/Admin/Settings_Page.php:322
 msgid "Badges are rendered in this order (when active): Recommended, Sale, Multipack, New, Category, Product-specific."
-msgstr "Odznaky sa vykresľujú v tomto poradí (ak sú aktívne): Odporúčané, Zľava, Multibalenie, Novinka, Kategória, Produktové."
+msgstr "Štítky se vykreslují v tomto pořadí (pokud jsou aktivní): Doporučené, Sleva, Multipack, Novinka, Kategorie, Produktové."
 
 #: inc/Admin/Settings_Page.php:344
 msgid "Typography"
-msgstr "Typografia"
+msgstr "Typografie"
 
 #: inc/Admin/Settings_Page.php:348
 msgid "Font size (px)"
-msgstr "Veľkosť písma (px)"
+msgstr "Velikost písma (px)"
 
 #: inc/Admin/Settings_Page.php:362
 msgid "Letter spacing (px)"
-msgstr "Medzera medzi písmenami (px)"
+msgstr "Mezera mezi písmeny (px)"
 
 #: inc/Admin/Settings_Page.php:375
 msgid "Text transform"
-msgstr "Transformácia textu"
+msgstr "Transformace textu"
 
 #: inc/Admin/Settings_Page.php:382 inc/Admin/Settings_Page.php:399
 msgid "Normal"
-msgstr "Normálne"
+msgstr "Normální"
 
 #: inc/Admin/Settings_Page.php:385
 msgid "Uppercase"
-msgstr "VEĽKÉ PÍSMÁ"
+msgstr "VELKÁ PÍSMENA"
 
 #: inc/Admin/Settings_Page.php:392
 msgid "Font weight"
-msgstr "Hrúbka písma"
+msgstr "Tloušťka písma"
 
 #: inc/Admin/Settings_Page.php:402
 msgid "Bold"
@@ -224,27 +224,27 @@ msgstr "Tučné"
 
 #: inc/Admin/Settings_Page.php:420
 msgid "Enable subtle shadow on badges"
-msgstr "Zapnúť jemný tieň odznakov"
+msgstr "Povolit jemný stín štítků"
 
 #: inc/Admin/Settings_Page.php:427
 msgid "Badge style & layout"
-msgstr "Štýl a rozloženie odznakov"
+msgstr "Styl a rozložení štítků"
 
 #: inc/Admin/Settings_Page.php:429
 msgid "Choose overall shape for badges, outline vs solid, and whether badges are displayed inline or stacked."
-msgstr "Vyberte celkový tvar odznakov, obrys vs. plná výplň a či sa majú zobrazovať v riadku alebo pod sebou."
+msgstr "Vyberte celkový tvar štítků, obrys vs. plná výplň a zda se mají zobrazovat v řádku nebo pod sebou."
 
 #: inc/Admin/Settings_Page.php:438
 msgid "Compact pill"
-msgstr "Kompaktný ovál"
+msgstr "Kompaktní ovál"
 
 #: inc/Admin/Settings_Page.php:439
 msgid "Square"
-msgstr "Štvorec"
+msgstr "Čtverec"
 
 #: inc/Admin/Settings_Page.php:440
 msgid "Rounded rectangle"
-msgstr "Zaoblený obdĺžnik"
+msgstr "Zaoblený obdélník"
 
 #: inc/Admin/Settings_Page.php:441
 msgid "Circle"
@@ -252,7 +252,7 @@ msgstr "Kruh"
 
 #: inc/Admin/Settings_Page.php:442
 msgid "Vertical ribbon"
-msgstr "Vertikálna stuha"
+msgstr "Svislá stuha"
 
 #: inc/Admin/Settings_Page.php:443
 msgid "Corner ribbon"
@@ -260,19 +260,19 @@ msgstr "Rohová stuha"
 
 #: inc/Admin/Settings_Page.php:444
 msgid "Tag"
-msgstr "Štítok"
+msgstr "Štítek"
 
 #: inc/Admin/Settings_Page.php:484
 msgid "Outline style"
-msgstr "Obrysový štýl"
+msgstr "Obrysový styl"
 
 #: inc/Admin/Settings_Page.php:489
 msgid "Badge layout"
-msgstr "Rozloženie odznakov"
+msgstr "Rozložení štítků"
 
 #: inc/Admin/Settings_Page.php:499
 msgid "Inline"
-msgstr "V riadku"
+msgstr "V řádku"
 
 #: inc/Admin/Settings_Page.php:509
 msgid "Stacked"
@@ -280,15 +280,15 @@ msgstr "Pod sebou"
 
 #: inc/Admin/Settings_Page.php:528
 msgid "Custom CSS (scoped)"
-msgstr "Vlastné CSS (scope)"
+msgstr "Vlastní CSS (scope)"
 
 #: inc/Admin/Settings_Page.php:530
 msgid "CSS is scoped under the .merineo-badges-scope wrapper to minimize the risk of breaking your theme."
-msgstr "CSS je obmedzené na wrapper .merineo-badges-scope, aby sa minimalizovalo riziko narušenia vašej témy."
+msgstr "CSS je omezené na wrapper .merineo-badges-scope, aby se minimalizovalo riziko narušení vaší šablony."
 
 #: inc/Admin/Settings_Page.php:534
 msgid "Useful selectors"
-msgstr "Užitočné selektory"
+msgstr "Užitečné selektory"
 
 #: inc/Admin/Settings_Page.php:593
 msgid "Hook"
@@ -296,11 +296,11 @@ msgstr "Hook"
 
 #: inc/Admin/Settings_Page.php:595
 msgid "Custom hook only"
-msgstr "Len vlastný hook"
+msgstr "Pouze vlastní hook"
 
 #: inc/Admin/Settings_Page.php:606
 msgid "Custom hook name"
-msgstr "Názov vlastného hooku"
+msgstr "Název vlastního hooku"
 
 #: inc/Admin/Settings_Page.php:617
 msgid "Priority"
@@ -308,11 +308,11 @@ msgstr "Priorita"
 
 #: inc/Admin/Settings_Page.php:628
 msgid "Alignment"
-msgstr "Zarovnanie"
+msgstr "Zarovnání"
 
 #: inc/Admin/Settings_Page.php:631
 msgid "Left"
-msgstr "Vľavo"
+msgstr "Vlevo"
 
 #: inc/Admin/Settings_Page.php:634
 msgid "Right"
@@ -320,76 +320,76 @@ msgstr "Vpravo"
 
 #: inc/Admin/Settings_Page.php:643
 msgid "Single product hooks control badges on the product detail page."
-msgstr "Hooky pre single produkt ovládajú odznaky na stránke detailu produktu."
+msgstr "Hooky pro single produkt ovládají štítky na stránce detailu produktu."
 
 #: inc/Admin/Settings_Page.php:647
 msgid "Loop hooks control badges on shop, category and archive listings."
-msgstr "Hooky pre loop ovládajú odznaky na stránkach obchodu, kategórií a archívov."
+msgstr "Hooky pro loop ovládají štítky na stránkách obchodu, kategorií a archivů."
 
 #: inc/Admin/Settings_Page.php:651
 msgid "Use custom hooks for advanced placements in your theme or custom templates."
-msgstr "Použite vlastné hooky pre pokročilé umiestnenia vo vašej téme alebo vlastných šablónach."
+msgstr "Použijte vlastní hooky pro pokročilá umístění ve vaší šabloně nebo vlastních šablonách."
 
 #: inc/Admin/Settings_Page.php:707
 msgid "Enabled"
-msgstr "Povolené"
+msgstr "Povoleno"
 
 #: inc/Admin/Settings_Page.php:716
 msgid "Toggle badge settings"
-msgstr "Rozbaliť/skryť nastavenia odznaku"
+msgstr "Rozbalit/schovat nastavení štítku"
 
 #: inc/Admin/Settings_Page.php:726
 msgid "Label"
-msgstr "Text odznaku"
+msgstr "Text štítku"
 
 #: inc/Admin/Settings_Page.php:738
 msgid "You can use {max_discount} in the label to insert the maximum multipack discount (e.g. \"-20%\" or \"10 €\")."
-msgstr "V texte odznaku môžete použiť {max_discount} na vloženie maximálnej multipack zľavy (napr. „-20 %“ alebo „10 €“)."
+msgstr "V textu štítku můžete použít {max_discount} pro vložení maximální multipack slevy (např. „-20 %“ nebo „10 €“)."
 
 #: inc/Admin/Settings_Page.php:752
 msgid "Minimum discount to show badge (%)"
-msgstr "Minimálna zľava pre zobrazenie odznaku (%)"
+msgstr "Minimální sleva pro zobrazení štítku (%)"
 
 #: inc/Admin/Settings_Page.php:770
 msgid "Badge is only shown if the effective maximum multipack discount (in percent) is greater or equal to this value."
-msgstr "Odznak sa zobrazí len vtedy, ak je efektívna maximálna multipack zľava (v percentách) väčšia alebo rovná tejto hodnote."
+msgstr "Štítek se zobrazí pouze tehdy, pokud je efektivní maximální multipack sleva (v procentech) větší nebo rovna této hodnotě."
 
 #: inc/Admin/Settings_Page.php:781
 msgid "Background color"
-msgstr "Farba pozadia"
+msgstr "Barva pozadí"
 
 #: inc/Admin/Settings_Page.php:792
 msgid "Text color"
-msgstr "Farba textu"
+msgstr "Barva textu"
 
 #: inc/Admin/Settings_Page.php:806
 msgid "Days visible after product creation"
-msgstr "Počet dní po vytvorení produktu, počas ktorých sa má zobrazovať"
+msgstr "Počet dní po vytvoření produktu, během kterých se má zobrazovat"
 
 #: inc/Admin/Settings_Page.php:821
 msgid "Sale display mode"
-msgstr "Režim zobrazenia zľavy"
+msgstr "Režim zobrazení slevy"
 
 #: inc/Admin/Settings_Page.php:825
 msgid "Do not display"
-msgstr "Nezobrazovať"
+msgstr "Nezobrazovat"
 
 #: inc/Admin/Settings_Page.php:828
 msgid "Label only"
-msgstr "Len text"
+msgstr "Pouze text"
 
 #: inc/Admin/Settings_Page.php:831
 msgid "Discount percent (e.g. -15 %)"
-msgstr "Percento zľavy (napr. -15 %)"
+msgstr "Procento slevy (např. -15 %)"
 
 #: inc/Admin/Settings_Page.php:834
 msgid "Saved amount (e.g. -5€)"
-msgstr "Ušetrená suma (napr. -5 €)"
+msgstr "Ušetřená částka (např. -5 €)"
 
 #: inc/Admin/Settings_Page.php:844
 msgid "Top bestseller products"
-msgstr "Počet najpredávanejších produktov"
+msgstr "Počet nejprodávanějších produktů"
 
 #: merineo-product-badges.php:43
 msgid "Settings"
-msgstr "Nastavenia"
+msgstr "Nastavení"
