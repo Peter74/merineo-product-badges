@@ -160,6 +160,14 @@ class Product_Meta {
 
         $value = get_post_meta( $post->ID, $this->meta_key, true );
         $json  = is_string( $value ) ? $value : '[]';
+
+        // Normalize to unescaped unicode for safe re-submit.
+        $decoded = json_decode( $json, true );
+        if ( is_array( $decoded ) ) {
+            $json = wp_json_encode( $decoded, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+        } else {
+            $json = '[]';
+        }
         ?>
         <div class="merineo-pb-badges-box" data-merineo-pb-target="#merineo_pb_product_badges_input">
             <p class="description">
@@ -228,7 +236,7 @@ class Product_Meta {
 
         // Pass raw JSON to update_post_meta().
         // Sanitization is handled by register_post_meta() -> sanitize_meta_value().
-        update_post_meta( $post_id, $this->meta_key, $json );
+        update_post_meta( $post_id, $this->meta_key, wp_slash( $json ) );
     }
 
     /**
@@ -273,6 +281,6 @@ class Product_Meta {
             ];
         }
 
-        return wp_json_encode( $sanitized );
+        return wp_json_encode( $sanitized, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
     }
 }

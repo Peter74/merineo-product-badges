@@ -1,0 +1,116 @@
+name: WP Plugin ZIP (Release Asset)
+
+on:
+  workflow_call:
+    inputs:
+      plugin_slug:
+        description: 'Plugin folder name inside ZIP (e.g. merineo-woo-categories). Default: repo name.'
+        required: false
+        type: string
+      zip_name:
+        description: 'ZIP filename to upload. Default: <plugin_slug>.zip'
+        required: false
+        type: string
+      exclude:
+        description: 'Newline-separated rsync exclude patterns (optional).'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve names
+        id: names
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          REPO="${GITHUB_REPOSITORY##*/}"
+          SLUG="${{ inputs.plugin_slug }}"
+          if [ -z "$SLUG" ]; then
+            SLUG="$REPO"
+          fi
+
+          ZIP="${{ inputs.zip_name }}"
+          if [ -z "$ZIP" ]; then
+            ZIP="${SLUG}.zip"
+          fi
+
+          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
+          echo "zip=$ZIP"  >> "$GITHUB_OUTPUT"
+          echo "tag=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare build directory
+        shell: bash
+        run: |
+          set -euo pipefail
+          SLUG="${{ steps.names.outputs.slug }}"
+          BUILD_DIR="build/${SLUG}"
+
+          rm -rf build
+          mkdir -p "$BUILD_DIR"
+
+          # Base excludes (safe defaults for WP plugins)
+          cat > /tmp/excludes.txt << 'EOF'
+          .git/
+          .github/
+          node_modules/
+          vendor-bin/
+          tests/
+          .editorconfig
+          .gitignore
+          .gitattributes
+          *.zip
+          *.phar
+          phpunit.xml
+          phpunit.xml.dist
+          composer.lock
+          package-lock.json
+          pnpm-lock.yaml
+          yarn.lock
+          EOF
+
+          # Optional repo-specific excludes passed from caller workflow
+          if [ -n "${{ inputs.exclude }}" ]; then
+            printf "%s\n" "${{ inputs.exclude }}" >> /tmp/excludes.txt
+          fi
+
+          RSYNC_EXCLUDES=()
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            RSYNC_EXCLUDES+=( "--exclude=$line" )
+          done < /tmp/excludes.txt
+
+          rsync -a "${RSYNC_EXCLUDES[@]}" ./ "$BUILD_DIR/"
+
+      - name: Create ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          SLUG="${{ steps.names.outputs.slug }}"
+          ZIP="${{ steps.names.outputs.zip }}"
+          (cd build && zip -r "../${ZIP}" "${SLUG}" -q)
+
+      - name: Upload ZIP to GitHub Release (create if missing)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          TAG="${{ steps.names.outputs.tag }}"
+          ZIP="${{ steps.names.outputs.zip }}"
+
+          # GitHub CLI is available on GitHub-hosted runners and uses GH_TOKEN.
+          # https://docs.github.com/actions/using-workflows/using-github-cli-in-workflows
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "$TAG" --notes ""
+
+          gh release upload "$TAG" "$ZIP" --clobber
