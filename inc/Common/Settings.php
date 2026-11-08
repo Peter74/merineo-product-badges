@@ -96,7 +96,13 @@ class Settings {
             $settings = [];
         }
 
-        return wp_parse_args( $settings, $this->get_default_settings() );
+        /*
+         * Deep merge: wp_parse_args() is shallow, so badge types added in newer
+         * versions (e.g. "price_drop") would be missing from stored "automatic"
+         * settings until the next save, causing errors in admin and frontend.
+         * Settings contain only associative arrays, so array_replace_recursive() is safe.
+         */
+        return array_replace_recursive( $this->get_default_settings(), $settings );
     }
 
     /**
@@ -227,7 +233,7 @@ class Settings {
         );
 
         // Other badges (some may have "count").
-        foreach ( [ 'featured', 'sale', 'outofstock', 'instock', 'backorder', 'bestseller', 'multipack' ] as $key ) {
+        foreach ( [ 'featured', 'sale', 'price_drop', 'outofstock', 'instock', 'backorder', 'bestseller', 'multipack' ] as $key ) {
             $output['automatic'][ $key ] = $this->sanitize_auto_badge(
                 $automatic[ $key ] ?? [],
                 $defaults['automatic'][ $key ],
@@ -350,7 +356,7 @@ class Settings {
         $target['bg_color']   = $bg_color;
         $target['text_color'] = $text_color;
 
-        // New: min_discount support (used by "multipack" badge).
+        // min_discount support (used by "multipack" and "price_drop" badges).
         if ( isset( $defaults['min_discount'] ) ) {
             $min_discount = isset( $src['min_discount'] )
                 ? (float) $src['min_discount']
@@ -453,6 +459,14 @@ class Settings {
                     'bg_color'   => '#dc2626',
                     'text_color' => '#ffffff',
                     'mode'       => 'percent',
+                ],
+                // Discount shown by price plugins (e.g. YITH Dynamic Pricing) without a WooCommerce sale price.
+                'price_drop' => [
+                    'enabled'      => false,
+                    'label'        => '-{percent} %',
+                    'bg_color'     => '#dc2626',
+                    'text_color'   => '#ffffff',
+                    'min_discount' => 0, // Minimum percent discount to show badge.
                 ],
                 'outofstock' => [
                     'enabled'    => true,

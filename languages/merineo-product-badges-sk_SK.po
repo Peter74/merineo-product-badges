@@ -43,7 +43,7 @@ msgstr "Zatiaľ nemáte žiadne odznaky. Kliknite na „Pridať odznak“ a vytv
 
 #: inc/Admin/Category_Meta.php:132
 #: inc/Admin/Product_Meta.php:132
-#: inc/Admin/Settings_Page.php:517
+#: inc/Admin/Settings_Page.php:518
 msgid "Badge"
 msgstr "Odznak"
 
@@ -179,230 +179,230 @@ msgstr "Odporúčané"
 msgid "Sale"
 msgstr "Zľava"
 
-#: inc/Admin/Settings_Page.php:326
-#: inc/Common/Settings.php:459
+#: inc/Admin/Settings_Page.php:327
+#: inc/Common/Settings.php:467
 msgid "Out of stock"
 msgstr "Vypredané"
 
-#: inc/Admin/Settings_Page.php:327
-#: inc/Common/Settings.php:465
+#: inc/Admin/Settings_Page.php:328
+#: inc/Common/Settings.php:473
 msgid "In stock"
 msgstr "Skladom"
 
-#: inc/Admin/Settings_Page.php:328
-#: inc/Common/Settings.php:471
+#: inc/Admin/Settings_Page.php:329
+#: inc/Common/Settings.php:479
 msgid "Backorder"
 msgstr "Na objednávku"
 
-#: inc/Admin/Settings_Page.php:329
-#: inc/Common/Settings.php:477
+#: inc/Admin/Settings_Page.php:330
+#: inc/Common/Settings.php:485
 msgid "Bestseller"
 msgstr "Najpredávanejší"
 
-#: inc/Admin/Settings_Page.php:333
-#: inc/Common/Settings.php:484
-#: inc/Frontend/Renderer.php:1251
+#: inc/Admin/Settings_Page.php:334
+#: inc/Common/Settings.php:492
+#: inc/Frontend/Renderer.php:1493
 msgid "Multipack"
 msgstr "Multibalenie"
 
-#: inc/Admin/Settings_Page.php:400
+#: inc/Admin/Settings_Page.php:401
 msgid "Typography"
 msgstr "Typografia"
 
-#: inc/Admin/Settings_Page.php:404
+#: inc/Admin/Settings_Page.php:405
 msgid "Font size (px)"
 msgstr "Veľkosť písma (px)"
 
-#: inc/Admin/Settings_Page.php:418
+#: inc/Admin/Settings_Page.php:419
 msgid "Letter spacing (px)"
 msgstr "Medzera medzi písmenami (px)"
 
-#: inc/Admin/Settings_Page.php:431
+#: inc/Admin/Settings_Page.php:432
 msgid "Text transform"
 msgstr "Transformácia textu"
 
-#: inc/Admin/Settings_Page.php:438
-#: inc/Admin/Settings_Page.php:455
+#: inc/Admin/Settings_Page.php:439
+#: inc/Admin/Settings_Page.php:456
 msgid "Normal"
 msgstr "Normálne"
 
-#: inc/Admin/Settings_Page.php:441
+#: inc/Admin/Settings_Page.php:442
 msgid "Uppercase"
 msgstr "VEĽKÉ PÍSMÁ"
 
-#: inc/Admin/Settings_Page.php:448
+#: inc/Admin/Settings_Page.php:449
 msgid "Font weight"
 msgstr "Hrúbka písma"
 
-#: inc/Admin/Settings_Page.php:458
+#: inc/Admin/Settings_Page.php:459
 msgid "Bold"
 msgstr "Tučné"
 
-#: inc/Admin/Settings_Page.php:476
+#: inc/Admin/Settings_Page.php:477
 msgid "Enable subtle shadow on badges"
 msgstr "Zapnúť jemný tieň odznakov"
 
-#: inc/Admin/Settings_Page.php:483
+#: inc/Admin/Settings_Page.php:484
 msgid "Badge style & layout"
 msgstr "Štýl a rozloženie odznakov"
 
-#: inc/Admin/Settings_Page.php:485
+#: inc/Admin/Settings_Page.php:486
 msgid "Choose overall shape for badges, outline vs solid, and whether badges are displayed inline or stacked."
 msgstr "Vyberte celkový tvar odznakov, obrys vs. plná výplň a či sa majú zobrazovať v riadku alebo pod sebou."
 
-#: inc/Admin/Settings_Page.php:494
+#: inc/Admin/Settings_Page.php:495
 msgid "Compact pill"
 msgstr "Kompaktný ovál"
 
-#: inc/Admin/Settings_Page.php:495
+#: inc/Admin/Settings_Page.php:496
 msgid "Square"
 msgstr "Štvorec"
 
-#: inc/Admin/Settings_Page.php:496
+#: inc/Admin/Settings_Page.php:497
 msgid "Rounded rectangle"
 msgstr "Zaoblený obdĺžnik"
 
-#: inc/Admin/Settings_Page.php:497
+#: inc/Admin/Settings_Page.php:498
 msgid "Circle"
 msgstr "Kruh"
 
-#: inc/Admin/Settings_Page.php:498
+#: inc/Admin/Settings_Page.php:499
 msgid "Vertical ribbon"
 msgstr "Vertikálna stuha"
 
-#: inc/Admin/Settings_Page.php:499
+#: inc/Admin/Settings_Page.php:500
 msgid "Corner ribbon"
 msgstr "Rohová stuha"
 
-#: inc/Admin/Settings_Page.php:500
+#: inc/Admin/Settings_Page.php:501
 msgid "Tag"
 msgstr "Štítok"
 
-#: inc/Admin/Settings_Page.php:540
+#: inc/Admin/Settings_Page.php:541
 msgid "Outline style"
 msgstr "Obrysový štýl"
 
-#: inc/Admin/Settings_Page.php:545
+#: inc/Admin/Settings_Page.php:546
 msgid "Badge layout"
 msgstr "Rozloženie odznakov"
 
-#: inc/Admin/Settings_Page.php:555
+#: inc/Admin/Settings_Page.php:556
 msgid "Inline"
 msgstr "V riadku"
 
-#: inc/Admin/Settings_Page.php:565
+#: inc/Admin/Settings_Page.php:566
 msgid "Stacked"
 msgstr "Pod sebou"
 
-#: inc/Admin/Settings_Page.php:584
+#: inc/Admin/Settings_Page.php:585
 msgid "Custom CSS (scoped)"
 msgstr "Vlastné CSS (scope)"
 
-#: inc/Admin/Settings_Page.php:586
+#: inc/Admin/Settings_Page.php:587
 msgid "CSS is scoped under the .merineo-badges-scope wrapper to minimize the risk of breaking your theme."
 msgstr "CSS je obmedzené na wrapper .merineo-badges-scope, aby sa minimalizovalo riziko narušenia vašej témy."
 
-#: inc/Admin/Settings_Page.php:590
+#: inc/Admin/Settings_Page.php:591
 msgid "Useful selectors"
 msgstr "Užitočné selektory"
 
-#: inc/Admin/Settings_Page.php:649
+#: inc/Admin/Settings_Page.php:651
 msgid "Hook"
 msgstr "Hook"
 
-#: inc/Admin/Settings_Page.php:651
+#: inc/Admin/Settings_Page.php:653
 msgid "Custom hook only"
 msgstr "Len vlastný hook"
 
-#: inc/Admin/Settings_Page.php:662
+#: inc/Admin/Settings_Page.php:664
 msgid "Custom hook name"
 msgstr "Názov vlastného hooku"
 
-#: inc/Admin/Settings_Page.php:673
+#: inc/Admin/Settings_Page.php:675
 msgid "Priority"
 msgstr "Priorita"
 
-#: inc/Admin/Settings_Page.php:684
+#: inc/Admin/Settings_Page.php:686
 msgid "Alignment"
 msgstr "Zarovnanie"
 
-#: inc/Admin/Settings_Page.php:687
+#: inc/Admin/Settings_Page.php:689
 msgid "Left"
 msgstr "Vľavo"
 
-#: inc/Admin/Settings_Page.php:690
+#: inc/Admin/Settings_Page.php:692
 msgid "Right"
 msgstr "Vpravo"
 
-#: inc/Admin/Settings_Page.php:699
+#: inc/Admin/Settings_Page.php:701
 msgid "Single product hooks control badges on the product detail page."
 msgstr "Hooky pre single produkt ovládajú odznaky na stránke detailu produktu."
 
-#: inc/Admin/Settings_Page.php:703
+#: inc/Admin/Settings_Page.php:705
 msgid "Loop hooks control badges on shop, category and archive listings."
 msgstr "Hooky pre loop ovládajú odznaky na stránkach obchodu, kategórií a archívov."
 
-#: inc/Admin/Settings_Page.php:707
+#: inc/Admin/Settings_Page.php:709
 msgid "Use custom hooks for advanced placements in your theme or custom templates."
 msgstr "Použite vlastné hooky pre pokročilé umiestnenia vo vašej téme alebo vlastných šablónach."
 
-#: inc/Admin/Settings_Page.php:763
+#: inc/Admin/Settings_Page.php:765
 msgid "Enabled"
 msgstr "Povolené"
 
-#: inc/Admin/Settings_Page.php:772
+#: inc/Admin/Settings_Page.php:774
 msgid "Toggle badge settings"
 msgstr "Rozbaliť/skryť nastavenia odznaku"
 
-#: inc/Admin/Settings_Page.php:782
+#: inc/Admin/Settings_Page.php:784
 msgid "Label"
 msgstr "Text odznaku"
 
-#: inc/Admin/Settings_Page.php:794
+#: inc/Admin/Settings_Page.php:796
 msgid "You can use {max_discount} in the label to insert the maximum multipack discount (e.g. \"-20%\" or \"10 €\")."
 msgstr "V texte odznaku môžete použiť {max_discount} na vloženie maximálnej multipack zľavy (napr. „-20 %“ alebo „10 €“)."
 
-#: inc/Admin/Settings_Page.php:823
+#: inc/Admin/Settings_Page.php:843
 msgid "Minimum discount to show badge (%)"
 msgstr "Minimálna zľava pre zobrazenie odznaku (%)"
 
-#: inc/Admin/Settings_Page.php:841
+#: inc/Admin/Settings_Page.php:867
 msgid "Badge is only shown if the effective maximum multipack discount (in percent) is greater or equal to this value."
 msgstr "Odznak sa zobrazí len vtedy, ak je efektívna maximálna multipack zľava (v percentách) väčšia alebo rovná tejto hodnote."
 
-#: inc/Admin/Settings_Page.php:852
+#: inc/Admin/Settings_Page.php:879
 msgid "Background color"
 msgstr "Farba pozadia"
 
-#: inc/Admin/Settings_Page.php:863
+#: inc/Admin/Settings_Page.php:890
 msgid "Text color"
 msgstr "Farba textu"
 
-#: inc/Admin/Settings_Page.php:877
+#: inc/Admin/Settings_Page.php:904
 msgid "Days visible after product creation"
 msgstr "Počet dní po vytvorení produktu, počas ktorých sa má zobrazovať"
 
-#: inc/Admin/Settings_Page.php:892
+#: inc/Admin/Settings_Page.php:919
 msgid "Sale display mode"
 msgstr "Režim zobrazenia zľavy"
 
-#: inc/Admin/Settings_Page.php:896
+#: inc/Admin/Settings_Page.php:923
 msgid "Do not display"
 msgstr "Nezobrazovať"
 
-#: inc/Admin/Settings_Page.php:899
+#: inc/Admin/Settings_Page.php:926
 msgid "Label only"
 msgstr "Len text"
 
-#: inc/Admin/Settings_Page.php:902
+#: inc/Admin/Settings_Page.php:929
 msgid "Discount percent (e.g. -15 %)"
 msgstr "Percento zľavy (napr. -15 %)"
 
-#: inc/Admin/Settings_Page.php:905
+#: inc/Admin/Settings_Page.php:932
 msgid "Saved amount (e.g. -5€)"
 msgstr "Ušetrená suma (napr. -5 €)"
 
-#: inc/Admin/Settings_Page.php:915
+#: inc/Admin/Settings_Page.php:942
 msgid "Top bestseller products"
 msgstr "Počet najpredávanejších produktov"
 
@@ -410,17 +410,13 @@ msgstr "Počet najpredávanejších produktov"
 msgid "Settings"
 msgstr "Nastavenia"
 
-#: inc/Admin/Settings_Page.php:358
+#: inc/Admin/Settings_Page.php:359
 msgid "Status: Active now. Badge shows only on products where this rule applies (and is valid for current user)."
 msgstr "Stav: Práve aktívne. Odznak sa zobrazí len pri produktoch, na ktoré sa pravidlo vzťahuje (a je platné pre aktuálneho používateľa)."
 
-#: inc/Admin/Settings_Page.php:359
+#: inc/Admin/Settings_Page.php:360
 msgid "Status: Not active now (schedule/conditions/user). Badge will start showing automatically once the rule becomes active and applies."
 msgstr "Stav: Momentálne neaktívne (plánovanie/podmienky/používateľ). Odznak sa začne zobrazovať automaticky, keď sa pravidlo stane aktívnym a bude sa vzťahovať na produkt."
-
-#: inc/Admin/Settings_Page.php:378
-msgid "Badges are rendered in this order (when active): Recommended, Sale, Promotions (YITH), Dynamic pricing (YITH), Multipack, New, Bestseller, Stock status, Category, Product-specific."
-msgstr "Odznaky sa vykresľujú v tomto poradí (ak sú aktívne): Odporúčané, Zľava, Akcie (YITH), Dynamické ceny (YITH), Multibalenie, Novinka, Najpredávanejší, Stav skladu, Kategória, Produktové."
 
 #. translators: %s: YITH rule ID.
 #: inc/Common/Yith_Dynamic_Pricing_Helper.php:142
@@ -428,10 +424,30 @@ msgstr "Odznaky sa vykresľujú v tomto poradí (ak sú aktívne): Odporúčané
 msgid "YITH rule #%s"
 msgstr "YITH pravidlo #%s"
 
-#: inc/Frontend/Renderer.php:907
+#: inc/Frontend/Renderer.php:1149
 msgid "Promotion"
 msgstr "Akcia"
 
-#: inc/Frontend/Renderer.php:975
+#: inc/Frontend/Renderer.php:1217
 msgid "Discount"
 msgstr "Zľava"
+
+#: inc/Admin/Settings_Page.php:326
+msgid "Discounted price (price plugins)"
+msgstr "Zľavnená cena (cenové pluginy)"
+
+#: inc/Admin/Settings_Page.php:379
+msgid "Badges are rendered in this order (when active): Recommended, Sale, Discounted price, Promotions (YITH), Dynamic pricing (YITH), Multipack, New, Bestseller, Stock status, Category, Product-specific."
+msgstr "Odznaky sa vykresľujú v tomto poradí (ak sú aktívne): Odporúčané, Zľava, Zľavnená cena, Akcie (YITH), Dynamické ceny (YITH), Multibalenie, Novinka, Najpredávanejší, Stav skladu, Kategória, Produktové."
+
+#: inc/Admin/Settings_Page.php:806
+msgid "Shown when the price displayed to the customer is lower than the regular price, but the product has no WooCommerce sale price (e.g. discounts from YITH Dynamic Pricing or role-based price plugins). Products on sale are skipped, they use the Sale badge."
+msgstr "Zobrazí sa, keď je cena zobrazená zákazníkovi nižšia ako bežná cena, ale produkt nemá akciovú cenu WooCommerce (napr. zľavy z YITH Dynamic Pricing alebo pluginov s cenami podľa rolí). Produkty v akcii sa preskočia, majú odznak Zľava."
+
+#: inc/Admin/Settings_Page.php:814
+msgid "Placeholders: {percent} – discount in percent rounded to a whole number (e.g. 25), {price} – saved amount with 2 decimals (e.g. 5,00 €). Add the minus sign in the label, e.g. \"-{percent} %\"."
+msgstr "Zástupné znaky: {percent} – zľava v percentách zaokrúhlená na celé číslo (napr. 25), {price} – ušetrená suma na 2 desatinné miesta (napr. 5,00 €). Znamienko mínus pridajte do textu, napr. „-{percent} %“."
+
+#: inc/Admin/Settings_Page.php:862
+msgid "Badge is only shown if the displayed discount (in percent) is greater or equal to this value."
+msgstr "Odznak sa zobrazí, len ak je zobrazená zľava (v percentách) väčšia alebo rovná tejto hodnote."

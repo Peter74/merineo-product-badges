@@ -323,6 +323,7 @@ class Settings_Page {
             $this->render_auto_badge_accordion( 'new', __( 'New', 'merineo-product-badges' ), $options['automatic']['new'], $option_name, true, false );
             $this->render_auto_badge_accordion( 'featured', __( 'Recommended', 'merineo-product-badges' ), $options['automatic']['featured'], $option_name );
             $this->render_auto_badge_accordion( 'sale', __( 'Sale', 'merineo-product-badges' ), $options['automatic']['sale'], $option_name, false, true );
+            $this->render_auto_badge_accordion( 'price_drop', __( 'Discounted price (price plugins)', 'merineo-product-badges' ), $options['automatic']['price_drop'], $option_name );
             $this->render_auto_badge_accordion( 'outofstock', __( 'Out of stock', 'merineo-product-badges' ), $options['automatic']['outofstock'], $option_name );
             $this->render_auto_badge_accordion( 'instock', __( 'In stock', 'merineo-product-badges' ), $options['automatic']['instock'], $option_name );
             $this->render_auto_badge_accordion( 'backorder', __( 'Backorder', 'merineo-product-badges' ), $options['automatic']['backorder'], $option_name );
@@ -376,7 +377,7 @@ class Settings_Page {
             <p class="description merineo-pb-order-note">
                 <?php
                 esc_html_e(
-                        'Badges are rendered in this order (when active): Recommended, Sale, Promotions (YITH), Dynamic pricing (YITH), Multipack, New, Bestseller, Stock status, Category, Product-specific.',
+                        'Badges are rendered in this order (when active): Recommended, Sale, Discounted price, Promotions (YITH), Dynamic pricing (YITH), Multipack, New, Bestseller, Stock status, Category, Product-specific.',
                         'merineo-product-badges'
                 );
                 ?>
@@ -595,6 +596,7 @@ class Settings_Page {
                             '.merineo-badge',
                             '.merineo-badge--type-featured',
                             '.merineo-badge--type-sale',
+                            '.merineo-badge--type-price_drop',
                             '.merineo-badge--type-new',
                             '.merineo-badge--type-bestseller',
                             '.merineo-badge--type-outofstock',
@@ -798,6 +800,24 @@ class Settings_Page {
                                     ?>
                                 </p>
                             <?php endif; ?>
+                            <?php if ( 'price_drop' === $key ) : ?>
+                                <p class="description">
+                                    <?php
+                                    esc_html_e(
+                                            'Shown when the price displayed to the customer is lower than the regular price, but the product has no WooCommerce sale price (e.g. discounts from YITH Dynamic Pricing or role-based price plugins). Products on sale are skipped, they use the Sale badge.',
+                                            'merineo-product-badges'
+                                    );
+                                    ?>
+                                </p>
+                                <p class="description">
+                                    <?php
+                                    esc_html_e(
+                                            'Placeholders: {percent} – discount in percent rounded to a whole number (e.g. 25), {price} – saved amount with 2 decimals (e.g. 5,00 €). Add the minus sign in the label, e.g. "-{percent} %".',
+                                            'merineo-product-badges'
+                                    );
+                                    ?>
+                                </p>
+                            <?php endif; ?>
                             <?php
                             /**
                              * Informational note about YITH rule status for YITH-based badges.
@@ -816,7 +836,7 @@ class Settings_Page {
                         </td>
                     </tr>
 
-                    <?php if ( 'multipack' === $key ) : ?>
+                    <?php if ( in_array( $key, [ 'multipack', 'price_drop' ], true ) ) : ?>
                         <tr>
                             <th scope="row">
                                 <label for="<?php echo esc_attr( $name_prefix . '_min_discount' ); ?>">
@@ -838,10 +858,17 @@ class Settings_Page {
                                 />
                                 <p class="description">
                                     <?php
-                                    esc_html_e(
-                                            'Badge is only shown if the effective maximum multipack discount (in percent) is greater or equal to this value.',
-                                            'merineo-product-badges'
-                                    );
+                                    if ( 'price_drop' === $key ) {
+                                        esc_html_e(
+                                                'Badge is only shown if the displayed discount (in percent) is greater or equal to this value.',
+                                                'merineo-product-badges'
+                                        );
+                                    } else {
+                                        esc_html_e(
+                                                'Badge is only shown if the effective maximum multipack discount (in percent) is greater or equal to this value.',
+                                                'merineo-product-badges'
+                                        );
+                                    }
                                     ?>
                                 </p>
                             </td>

@@ -50,6 +50,15 @@ class Renderer {
     private static ?array $yith_promo_rules = null;
 
     /**
+     * Runtime cache of detected displayed discounts, keyed by product ID (per request).
+     *
+     * Not persisted: displayed prices may differ per user (roles, logged-in state).
+     *
+     * @var array<int,array<string,float>|null>
+     */
+    private static array $displayed_discount_cache = [];
+
+    /**
      * Constructor.
      *
      * @param Settings $settings Settings service.
@@ -329,14 +338,15 @@ class Renderer {
      * Order:
      * 1) Recommended (featured)
      * 2) Sale
-     * 3) YITH promotion rule
-     * 4) YITH dynamic pricing rule
-     * 5) Multipack
-     * 6) New
-     * 7) Bestseller
-     * 8) Stock state
-     * 9) Category badges
-     * 10) Product-specific badges
+     * 3) Discounted price (price shown by price plugins, no WC sale price)
+     * 4) YITH promotion rule
+     * 5) YITH dynamic pricing rule
+     * 6) Multipack
+     * 7) New
+     * 8) Bestseller
+     * 9) Stock state
+     * 10) Category badges
+     * 11) Product-specific badges
      *
      * @param \WC_Product         $product Product.
      * @param array<string,mixed> $options Settings.
@@ -348,6 +358,7 @@ class Renderer {
 
         $list = array_merge( $list, $this->get_featured_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_sale_badge( $product, $options ) );
+        $list = array_merge( $list, $this->get_price_drop_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_yith_promo_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_yith_dynamic_pricing_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_multipack_badge( $product, $options ) );
@@ -478,6 +489,237 @@ class Renderer {
                 'text_color' => (string) $conf['text_color'],
             ],
         ];
+    }
+
+    /**
+     * "Discounted price" badge – discount visible in the final price HTML.
+     *
+     * Plugin-agnostic: the decision is made from the price HTML the customer
+     * actually sees (after all price plugins such as YITH Dynamic Pricing have
+     * filtered it), compared with the regular price. Products that are on sale
+     * (the "Sale" badge condition) are skipped.
+     *
+     * Label placeholders:
+     * - {percent} discount in percent, rounded to a whole number (e.g. "25"),
+     * - {price}   saved amount with 2 decimals and currency (e.g. "5,00 €").
+     *
+     * @param \WC_Product         $product Product.
+     * @param array<string,mixed> $options Settings.
+     *
+     * @return array<int,array<string,mixed>>
+     */
+    private function get_price_drop_badge( \WC_Product $product, array $options ): array {
+        $conf = $options['automatic']['price_drop'] ?? null;
+        if ( ! is_array( $conf ) || empty( $conf['enabled'] ) ) {
+            return [];
+        }
+
+        // Products on sale are handled by the "Sale" badge.
+        if ( $product->is_on_sale() ) {
+            return [];
+        }
+
+        $product_id = (int) $product->get_id();
+        if ( ! array_key_exists( $product_id, self::$displayed_discount_cache ) ) {
+            self::$displayed_discount_cache[ $product_id ] = $this->detect_displayed_discount( $product );
+        }
+
+        $discount = self::$displayed_discount_cache[ $product_id ];
+        if ( null === $discount ) {
+            return [];
+        }
+
+        $min_discount = isset( $conf['min_discount'] ) ? (float) $conf['min_discount'] : 0.0;
+        if ( $min_discount > 0 && $discount['percent'] < $min_discount ) {
+            return [];
+        }
+
+        $label = trim( (string) ( $conf['label'] ?? '' ) );
+        if ( '' === $label ) {
+            $label = '-{percent} %';
+        }
+
+        $percent = (int) round( $discount['percent'] );
+
+        // Avoid "-0 %" for tiny discounts (e.g. rounding differences of price plugins).
+        if ( $percent < 1 && false !== strpos( $label, '{percent}' ) ) {
+            return [];
+        }
+
+        $label = str_replace(
+            [ '{percent}', '{price}' ],
+            [ (string) $percent, $this->format_plain_price( $discount['amount'] ) ],
+            $label
+        );
+
+        return [
+            [
+                'type'       => 'price_drop',
+                'source'     => 'auto',
+                'label'      => $label,
+                'bg_color'   => (string) ( $conf['bg_color'] ?? '' ),
+                'text_color' => (string) ( $conf['text_color'] ?? '' ),
+            ],
+        ];
+    }
+
+    /**
+     * Detect a discount from the final price HTML of a product.
+     *
+     * The lowest amount in the price HTML (price suffix excluded) is compared
+     * with the regular display price. This does not depend on <del>/<ins>
+     * markup, because price plugins use configurable formats (YITH default is
+     * "<del>%original_price%</del> %discounted_price%" without <ins>).
+     * Variable products compare the lowest displayed amount with the lowest
+     * regular variation price ("from" discount).
+     *
+     * @param \WC_Product $product Product.
+     *
+     * @return array{regular:float,price:float,amount:float,percent:float}|null Null when no discount is displayed.
+     *
+     * @link https://woocommerce.github.io/code-reference/classes/WC-Product.html#method_get_price_html
+     */
+    private function detect_displayed_discount( \WC_Product $product ): ?array {
+        $decimals = wc_get_price_decimals();
+
+        if ( $product instanceof \WC_Product_Variable ) {
+            $regular = (float) $product->get_variation_regular_price( 'min', true );
+        } else {
+            $raw_regular = $product->get_regular_price();
+            if ( '' === $raw_regular ) {
+                return null;
+            }
+            $regular = (float) wc_get_price_to_display( $product, [ 'price' => (float) $raw_regular ] );
+        }
+
+        // Compare at the precision the shop displays prices with.
+        $regular = round( $regular, $decimals );
+        if ( $regular <= 0 ) {
+            return null;
+        }
+
+        $amounts = $this->extract_price_amounts( (string) $product->get_price_html() );
+        if ( empty( $amounts ) ) {
+            return null;
+        }
+
+        $shown = round( min( $amounts ), $decimals );
+        if ( $shown <= 0 || $shown >= $regular ) {
+            return null;
+        }
+
+        return [
+            'regular' => $regular,
+            'price'   => $shown,
+            'amount'  => $regular - $shown,
+            'percent' => ( 1 - ( $shown / $regular ) ) * 100,
+        ];
+    }
+
+    /**
+     * Extract numeric amounts from WooCommerce price HTML.
+     *
+     * Reads every ".woocommerce-Price-amount" element (markup produced by wc_price())
+     * except those inside ".woocommerce-price-suffix" – the suffix may contain a
+     * lower price excluding tax (e.g. "8,13 € excl. VAT"), which is not a discount.
+     *
+     * @param string $html Price HTML.
+     *
+     * @return float[] Positive amounts found in the HTML.
+     *
+     * @link https://woocommerce.github.io/code-reference/files/woocommerce-includes-wc-formatting-functions.html#function_wc_price
+     */
+    private function extract_price_amounts( string $html ): array {
+        if ( '' === trim( $html ) || false === stripos( $html, 'woocommerce-Price-amount' ) || ! class_exists( '\DOMDocument' ) ) {
+            return [];
+        }
+
+        $previous = libxml_use_internal_errors( true );
+
+        $dom    = new \DOMDocument();
+        $loaded = $dom->loadHTML(
+            '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>' . $html . '</body></html>',
+            LIBXML_NONET
+        );
+
+        libxml_clear_errors();
+        libxml_use_internal_errors( $previous );
+
+        if ( ! $loaded ) {
+            return [];
+        }
+
+        $xpath = new \DOMXPath( $dom );
+        $nodes = $xpath->query(
+            "//*[contains(concat(' ', normalize-space(@class), ' '), ' woocommerce-Price-amount ')]"
+            . "[not(ancestor::*[contains(concat(' ', normalize-space(@class), ' '), ' woocommerce-price-suffix ')])]"
+        );
+
+        if ( false === $nodes ) {
+            return [];
+        }
+
+        $amounts = [];
+        foreach ( $nodes as $node ) {
+            $value = $this->parse_price_text( (string) $node->textContent );
+            if ( null !== $value && $value > 0 ) {
+                $amounts[] = $value;
+            }
+        }
+
+        return $amounts;
+    }
+
+    /**
+     * Parse a formatted price text (e.g. "1 234,50 €") using shop separators.
+     *
+     * @param string $text Price text (entities already decoded by DOM).
+     *
+     * @return float|null
+     *
+     * @link https://woocommerce.github.io/code-reference/files/woocommerce-includes-wc-core-functions.html#function_wc_get_price_decimal_separator
+     */
+    private function parse_price_text( string $text ): ?float {
+        $decimal  = html_entity_decode( (string) wc_get_price_decimal_separator(), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+        $thousand = html_entity_decode( (string) wc_get_price_thousand_separator(), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+        $text = html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+        if ( '' !== $thousand && $thousand !== $decimal ) {
+            $text = str_replace( $thousand, '', $text );
+        }
+
+        // Remove any whitespace (incl. non-breaking spaces used as thousand separators).
+        $text = (string) preg_replace( '/[\s\x{00A0}\x{202F}]+/u', '', $text );
+
+        if ( '' !== $decimal && '.' !== $decimal ) {
+            $text = str_replace( $decimal, '.', $text );
+        }
+
+        if ( 1 !== preg_match( '/\d+(?:\.\d+)?/', $text, $matches ) ) {
+            return null;
+        }
+
+        return (float) $matches[0];
+    }
+
+    /**
+     * Format an amount as plain text with currency and 2 decimals (e.g. "5,00 €").
+     *
+     * @param float $amount Amount.
+     *
+     * @return string Plain text (no HTML, entities decoded; escaped on output).
+     */
+    private function format_plain_price( float $amount ): string {
+        $html = wc_price(
+            $amount,
+            [
+                'decimals' => 2,
+                'in_span'  => false,
+            ]
+        );
+
+        return trim( html_entity_decode( wp_strip_all_tags( (string) $html ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
     }
 
     /**

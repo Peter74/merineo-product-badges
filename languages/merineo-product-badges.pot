@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-08T08:34:39+00:00\n"
+"POT-Creation-Date: 2026-11-08T08:58:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: merineo-product-badges\n"
@@ -43,7 +43,7 @@ msgstr ""
 
 #: inc/Admin/Category_Meta.php:132
 #: inc/Admin/Product_Meta.php:132
-#: inc/Admin/Settings_Page.php:517
+#: inc/Admin/Settings_Page.php:518
 msgid "Badge"
 msgstr ""
 
@@ -180,241 +180,257 @@ msgid "Sale"
 msgstr ""
 
 #: inc/Admin/Settings_Page.php:326
-#: inc/Common/Settings.php:459
-msgid "Out of stock"
+msgid "Discounted price (price plugins)"
 msgstr ""
 
 #: inc/Admin/Settings_Page.php:327
-#: inc/Common/Settings.php:465
-msgid "In stock"
+#: inc/Common/Settings.php:467
+msgid "Out of stock"
 msgstr ""
 
 #: inc/Admin/Settings_Page.php:328
-#: inc/Common/Settings.php:471
-msgid "Backorder"
+#: inc/Common/Settings.php:473
+msgid "In stock"
 msgstr ""
 
 #: inc/Admin/Settings_Page.php:329
-#: inc/Common/Settings.php:477
+#: inc/Common/Settings.php:479
+msgid "Backorder"
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:330
+#: inc/Common/Settings.php:485
 msgid "Bestseller"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:333
-#: inc/Common/Settings.php:484
-#: inc/Frontend/Renderer.php:1251
+#: inc/Admin/Settings_Page.php:334
+#: inc/Common/Settings.php:492
+#: inc/Frontend/Renderer.php:1493
 msgid "Multipack"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:358
+#: inc/Admin/Settings_Page.php:359
 msgid "Status: Active now. Badge shows only on products where this rule applies (and is valid for current user)."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:359
+#: inc/Admin/Settings_Page.php:360
 msgid "Status: Not active now (schedule/conditions/user). Badge will start showing automatically once the rule becomes active and applies."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:378
-msgid "Badges are rendered in this order (when active): Recommended, Sale, Promotions (YITH), Dynamic pricing (YITH), Multipack, New, Bestseller, Stock status, Category, Product-specific."
+#: inc/Admin/Settings_Page.php:379
+msgid "Badges are rendered in this order (when active): Recommended, Sale, Discounted price, Promotions (YITH), Dynamic pricing (YITH), Multipack, New, Bestseller, Stock status, Category, Product-specific."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:400
+#: inc/Admin/Settings_Page.php:401
 msgid "Typography"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:404
+#: inc/Admin/Settings_Page.php:405
 msgid "Font size (px)"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:418
+#: inc/Admin/Settings_Page.php:419
 msgid "Letter spacing (px)"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:431
+#: inc/Admin/Settings_Page.php:432
 msgid "Text transform"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:438
-#: inc/Admin/Settings_Page.php:455
+#: inc/Admin/Settings_Page.php:439
+#: inc/Admin/Settings_Page.php:456
 msgid "Normal"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:441
+#: inc/Admin/Settings_Page.php:442
 msgid "Uppercase"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:448
+#: inc/Admin/Settings_Page.php:449
 msgid "Font weight"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:458
+#: inc/Admin/Settings_Page.php:459
 msgid "Bold"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:476
+#: inc/Admin/Settings_Page.php:477
 msgid "Enable subtle shadow on badges"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:483
+#: inc/Admin/Settings_Page.php:484
 msgid "Badge style & layout"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:485
+#: inc/Admin/Settings_Page.php:486
 msgid "Choose overall shape for badges, outline vs solid, and whether badges are displayed inline or stacked."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:494
+#: inc/Admin/Settings_Page.php:495
 msgid "Compact pill"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:495
+#: inc/Admin/Settings_Page.php:496
 msgid "Square"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:496
+#: inc/Admin/Settings_Page.php:497
 msgid "Rounded rectangle"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:497
+#: inc/Admin/Settings_Page.php:498
 msgid "Circle"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:498
+#: inc/Admin/Settings_Page.php:499
 msgid "Vertical ribbon"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:499
+#: inc/Admin/Settings_Page.php:500
 msgid "Corner ribbon"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:500
+#: inc/Admin/Settings_Page.php:501
 msgid "Tag"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:540
+#: inc/Admin/Settings_Page.php:541
 msgid "Outline style"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:545
+#: inc/Admin/Settings_Page.php:546
 msgid "Badge layout"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:555
+#: inc/Admin/Settings_Page.php:556
 msgid "Inline"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:565
+#: inc/Admin/Settings_Page.php:566
 msgid "Stacked"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:584
+#: inc/Admin/Settings_Page.php:585
 msgid "Custom CSS (scoped)"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:586
+#: inc/Admin/Settings_Page.php:587
 msgid "CSS is scoped under the .merineo-badges-scope wrapper to minimize the risk of breaking your theme."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:590
+#: inc/Admin/Settings_Page.php:591
 msgid "Useful selectors"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:649
+#: inc/Admin/Settings_Page.php:651
 msgid "Hook"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:651
+#: inc/Admin/Settings_Page.php:653
 msgid "Custom hook only"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:662
+#: inc/Admin/Settings_Page.php:664
 msgid "Custom hook name"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:673
+#: inc/Admin/Settings_Page.php:675
 msgid "Priority"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:684
+#: inc/Admin/Settings_Page.php:686
 msgid "Alignment"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:687
+#: inc/Admin/Settings_Page.php:689
 msgid "Left"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:690
+#: inc/Admin/Settings_Page.php:692
 msgid "Right"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:699
+#: inc/Admin/Settings_Page.php:701
 msgid "Single product hooks control badges on the product detail page."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:703
+#: inc/Admin/Settings_Page.php:705
 msgid "Loop hooks control badges on shop, category and archive listings."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:707
+#: inc/Admin/Settings_Page.php:709
 msgid "Use custom hooks for advanced placements in your theme or custom templates."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:763
+#: inc/Admin/Settings_Page.php:765
 msgid "Enabled"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:772
+#: inc/Admin/Settings_Page.php:774
 msgid "Toggle badge settings"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:782
+#: inc/Admin/Settings_Page.php:784
 msgid "Label"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:794
+#: inc/Admin/Settings_Page.php:796
 msgid "You can use {max_discount} in the label to insert the maximum multipack discount (e.g. \"-20%\" or \"10 €\")."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:823
+#: inc/Admin/Settings_Page.php:806
+msgid "Shown when the price displayed to the customer is lower than the regular price, but the product has no WooCommerce sale price (e.g. discounts from YITH Dynamic Pricing or role-based price plugins). Products on sale are skipped, they use the Sale badge."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:814
+msgid "Placeholders: {percent} – discount in percent rounded to a whole number (e.g. 25), {price} – saved amount with 2 decimals (e.g. 5,00 €). Add the minus sign in the label, e.g. \"-{percent} %\"."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:843
 msgid "Minimum discount to show badge (%)"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:841
+#: inc/Admin/Settings_Page.php:862
+msgid "Badge is only shown if the displayed discount (in percent) is greater or equal to this value."
+msgstr ""
+
+#: inc/Admin/Settings_Page.php:867
 msgid "Badge is only shown if the effective maximum multipack discount (in percent) is greater or equal to this value."
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:852
+#: inc/Admin/Settings_Page.php:879
 msgid "Background color"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:863
+#: inc/Admin/Settings_Page.php:890
 msgid "Text color"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:877
+#: inc/Admin/Settings_Page.php:904
 msgid "Days visible after product creation"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:892
+#: inc/Admin/Settings_Page.php:919
 msgid "Sale display mode"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:896
+#: inc/Admin/Settings_Page.php:923
 msgid "Do not display"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:899
+#: inc/Admin/Settings_Page.php:926
 msgid "Label only"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:902
+#: inc/Admin/Settings_Page.php:929
 msgid "Discount percent (e.g. -15 %)"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:905
+#: inc/Admin/Settings_Page.php:932
 msgid "Saved amount (e.g. -5€)"
 msgstr ""
 
-#: inc/Admin/Settings_Page.php:915
+#: inc/Admin/Settings_Page.php:942
 msgid "Top bestseller products"
 msgstr ""
 
@@ -424,11 +440,11 @@ msgstr ""
 msgid "YITH rule #%s"
 msgstr ""
 
-#: inc/Frontend/Renderer.php:907
+#: inc/Frontend/Renderer.php:1149
 msgid "Promotion"
 msgstr ""
 
-#: inc/Frontend/Renderer.php:975
+#: inc/Frontend/Renderer.php:1217
 msgid "Discount"
 msgstr ""
 
