@@ -30,6 +30,34 @@ class Renderer {
      */
     private Settings $settings;
 
+
+    /**
+     * Runtime cache for YITH promo rules index (per request).
+     *
+     * @var array<string,mixed>|null
+     *
+     * @since 1.0.8
+     */
+    private static ?array $yith_promo_index = null;
+
+    /**
+     * Runtime cache for YITH promo rule objects (per request).
+     *
+     * @var array<int,object>|null
+     *
+     * @since 1.0.8
+     */
+    private static ?array $yith_promo_rules = null;
+
+    /**
+     * Runtime cache of detected displayed discounts, keyed by product ID (per request).
+     *
+     * Not persisted: displayed prices may differ per user (roles, logged-in state).
+     *
+     * @var array<int,array<string,float>|null>
+     */
+    private static array $displayed_discount_cache = [];
+
     /**
      * Constructor.
      *
@@ -48,15 +76,31 @@ class Renderer {
      * @link https://developer.wordpress.org/reference/functions/add_action/
      */
     public function hooks(): void {
-        // Remove default WooCommerce "Sale!" badge. Our plugin controls sale badges.
-        // @link https://docs.woocommerce.com/document/hooks/
-        add_filter( 'woocommerce_sale_flash', '__return_empty_string', 10 );
+        // Replace default WooCommerce "Sale!" badge while our badges are enabled.
+        // @link https://woocommerce.github.io/code-reference/hooks/hooks.html
+        add_filter( 'woocommerce_sale_flash', [ $this, 'filter_sale_flash' ], 10 );
 
         // Register dynamic hooks for single / loop / custom placements.
         add_action( 'wp', [ $this, 'register_output_hooks' ] );
 
         // Enqueue frontend styles and inline CSS variables.
         add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
+    }
+
+    /**
+     * Hide the default WooCommerce "Sale!" flash only when plugin badges are enabled.
+     *
+     * When the global toggle is off, WooCommerce output is left untouched so the
+     * store does not lose its only sale indicator.
+     *
+     * @param string|mixed $html Default sale flash HTML.
+     *
+     * @return string|mixed
+     */
+    public function filter_sale_flash( $html ) {
+        $options = $this->settings->all();
+
+        return empty( $options['general']['enabled'] ) ? $html : '';
     }
 
     /**
@@ -140,8 +184,9 @@ class Renderer {
         $css .= '}';
 
         // Append custom CSS, already scoped in UI recommendation.
+        // Sanitized again on output so values stored by older versions cannot close the <style> tag.
         if ( ! empty( $options['css']['custom'] ) ) {
-            $css .= "\n" . $options['css']['custom'];
+            $css .= "\n" . Settings::sanitize_custom_css( (string) $options['css']['custom'] );
         }
 
         wp_add_inline_style( 'merineo-product-badges', $css );
@@ -293,11 +338,15 @@ class Renderer {
      * Order:
      * 1) Recommended (featured)
      * 2) Sale
-     * 3) New
-     * 4) Bestseller
-     * 5) Stock state
-     * 6) Category badges
-     * 7) Product-specific badges
+     * 3) Discounted price (price shown by price plugins, no WC sale price)
+     * 4) YITH promotion rule
+     * 5) YITH dynamic pricing rule
+     * 6) Multipack
+     * 7) New
+     * 8) Bestseller
+     * 9) Stock state
+     * 10) Category badges
+     * 11) Product-specific badges
      *
      * @param \WC_Product         $product Product.
      * @param array<string,mixed> $options Settings.
@@ -309,6 +358,9 @@ class Renderer {
 
         $list = array_merge( $list, $this->get_featured_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_sale_badge( $product, $options ) );
+        $list = array_merge( $list, $this->get_price_drop_badge( $product, $options ) );
+        $list = array_merge( $list, $this->get_yith_promo_badge( $product, $options ) );
+        $list = array_merge( $list, $this->get_yith_dynamic_pricing_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_multipack_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_new_badge( $product, $options ) );
         $list = array_merge( $list, $this->get_bestseller_badge( $product, $options ) );
@@ -400,24 +452,9 @@ class Renderer {
             return [];
         }
 
-        $label        = (string) $conf['label'];
-        $raw_regular  = $product->get_regular_price();
-        $raw_sale     = $product->get_sale_price();
+        $label = (string) $conf['label'];
 
-        // Bez platných cien nemá zmysel počítať zľavu.
-        if ( '' === $raw_regular || '' === $raw_sale ) {
-            $mode = 'label';
-        }
-
-        // Pre výpočty použijeme Woo way: wc_get_price_to_display()
-        // aby sedeli s tým, čo vidí zákazník (dane, zaokrúhlenie atď.).
-        $regular = ( '' !== $raw_regular )
-            ? (float) wc_get_price_to_display( $product, [ 'price' => (float) $raw_regular ] )
-            : 0.0;
-
-        $sale = ( '' !== $raw_sale )
-            ? (float) wc_get_price_to_display( $product, [ 'price' => (float) $raw_sale ] )
-            : 0.0;
+        [ $regular, $sale ] = $this->get_sale_price_pair( $product, (string) $mode );
 
         if ( $regular <= 0 || $sale <= 0 || $sale >= $regular ) {
             $mode = 'label';
@@ -432,7 +469,7 @@ class Renderer {
         } elseif ( 'amount' === $mode && $regular > 0 && $sale > 0 ) {
             $amount = $regular - $sale;
 
-            // Text s menou bez <span>.
+            // Plain text with currency symbol (no <span> markup; entities survive esc_html()).
             $amount_display = wc_price(
                 $amount,
                 [
@@ -451,6 +488,296 @@ class Renderer {
                 'bg_color'   => (string) $conf['bg_color'],
                 'text_color' => (string) $conf['text_color'],
             ],
+        ];
+    }
+
+    /**
+     * "Discounted price" badge – discount visible in the final price HTML.
+     *
+     * Plugin-agnostic: the decision is made from the price HTML the customer
+     * actually sees (after all price plugins such as YITH Dynamic Pricing have
+     * filtered it), compared with the regular price. Products that are on sale
+     * (the "Sale" badge condition) are skipped.
+     *
+     * Label placeholders:
+     * - {percent} discount in percent, rounded to a whole number (e.g. "25"),
+     * - {price}   saved amount with 2 decimals and currency (e.g. "5,00 €").
+     *
+     * @param \WC_Product         $product Product.
+     * @param array<string,mixed> $options Settings.
+     *
+     * @return array<int,array<string,mixed>>
+     */
+    private function get_price_drop_badge( \WC_Product $product, array $options ): array {
+        $conf = $options['automatic']['price_drop'] ?? null;
+        if ( ! is_array( $conf ) || empty( $conf['enabled'] ) ) {
+            return [];
+        }
+
+        // Products on sale are handled by the "Sale" badge.
+        if ( $product->is_on_sale() ) {
+            return [];
+        }
+
+        $product_id = (int) $product->get_id();
+        if ( ! array_key_exists( $product_id, self::$displayed_discount_cache ) ) {
+            self::$displayed_discount_cache[ $product_id ] = $this->detect_displayed_discount( $product );
+        }
+
+        $discount = self::$displayed_discount_cache[ $product_id ];
+        if ( null === $discount ) {
+            return [];
+        }
+
+        $min_discount = isset( $conf['min_discount'] ) ? (float) $conf['min_discount'] : 0.0;
+        if ( $min_discount > 0 && $discount['percent'] < $min_discount ) {
+            return [];
+        }
+
+        $label = trim( (string) ( $conf['label'] ?? '' ) );
+        if ( '' === $label ) {
+            $label = '-{percent} %';
+        }
+
+        $percent = (int) round( $discount['percent'] );
+
+        // Avoid "-0 %" for tiny discounts (e.g. rounding differences of price plugins).
+        if ( $percent < 1 && false !== strpos( $label, '{percent}' ) ) {
+            return [];
+        }
+
+        $label = str_replace(
+            [ '{percent}', '{price}' ],
+            [ (string) $percent, $this->format_plain_price( $discount['amount'] ) ],
+            $label
+        );
+
+        return [
+            [
+                'type'       => 'price_drop',
+                'source'     => 'auto',
+                'label'      => $label,
+                'bg_color'   => (string) ( $conf['bg_color'] ?? '' ),
+                'text_color' => (string) ( $conf['text_color'] ?? '' ),
+            ],
+        ];
+    }
+
+    /**
+     * Detect a discount from the final price HTML of a product.
+     *
+     * The lowest amount in the price HTML (price suffix excluded) is compared
+     * with the regular display price. This does not depend on <del>/<ins>
+     * markup, because price plugins use configurable formats (YITH default is
+     * "<del>%original_price%</del> %discounted_price%" without <ins>).
+     * Variable products compare the lowest displayed amount with the lowest
+     * regular variation price ("from" discount).
+     *
+     * @param \WC_Product $product Product.
+     *
+     * @return array{regular:float,price:float,amount:float,percent:float}|null Null when no discount is displayed.
+     *
+     * @link https://woocommerce.github.io/code-reference/classes/WC-Product.html#method_get_price_html
+     */
+    private function detect_displayed_discount( \WC_Product $product ): ?array {
+        $decimals = wc_get_price_decimals();
+
+        if ( $product instanceof \WC_Product_Variable ) {
+            $regular = (float) $product->get_variation_regular_price( 'min', true );
+        } else {
+            $raw_regular = $product->get_regular_price();
+            if ( '' === $raw_regular ) {
+                return null;
+            }
+            $regular = (float) wc_get_price_to_display( $product, [ 'price' => (float) $raw_regular ] );
+        }
+
+        // Compare at the precision the shop displays prices with.
+        $regular = round( $regular, $decimals );
+        if ( $regular <= 0 ) {
+            return null;
+        }
+
+        $amounts = $this->extract_price_amounts( (string) $product->get_price_html() );
+        if ( empty( $amounts ) ) {
+            return null;
+        }
+
+        $shown = round( min( $amounts ), $decimals );
+        if ( $shown <= 0 || $shown >= $regular ) {
+            return null;
+        }
+
+        return [
+            'regular' => $regular,
+            'price'   => $shown,
+            'amount'  => $regular - $shown,
+            'percent' => ( 1 - ( $shown / $regular ) ) * 100,
+        ];
+    }
+
+    /**
+     * Extract numeric amounts from WooCommerce price HTML.
+     *
+     * Reads every ".woocommerce-Price-amount" element (markup produced by wc_price())
+     * except those inside ".woocommerce-price-suffix" – the suffix may contain a
+     * lower price excluding tax (e.g. "8,13 € excl. VAT"), which is not a discount.
+     *
+     * @param string $html Price HTML.
+     *
+     * @return float[] Positive amounts found in the HTML.
+     *
+     * @link https://woocommerce.github.io/code-reference/files/woocommerce-includes-wc-formatting-functions.html#function_wc_price
+     */
+    private function extract_price_amounts( string $html ): array {
+        if ( '' === trim( $html ) || false === stripos( $html, 'woocommerce-Price-amount' ) || ! class_exists( '\DOMDocument' ) ) {
+            return [];
+        }
+
+        $previous = libxml_use_internal_errors( true );
+
+        $dom    = new \DOMDocument();
+        $loaded = $dom->loadHTML(
+            '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>' . $html . '</body></html>',
+            LIBXML_NONET
+        );
+
+        libxml_clear_errors();
+        libxml_use_internal_errors( $previous );
+
+        if ( ! $loaded ) {
+            return [];
+        }
+
+        $xpath = new \DOMXPath( $dom );
+        $nodes = $xpath->query(
+            "//*[contains(concat(' ', normalize-space(@class), ' '), ' woocommerce-Price-amount ')]"
+            . "[not(ancestor::*[contains(concat(' ', normalize-space(@class), ' '), ' woocommerce-price-suffix ')])]"
+        );
+
+        if ( false === $nodes ) {
+            return [];
+        }
+
+        $amounts = [];
+        foreach ( $nodes as $node ) {
+            $value = $this->parse_price_text( (string) $node->textContent );
+            if ( null !== $value && $value > 0 ) {
+                $amounts[] = $value;
+            }
+        }
+
+        return $amounts;
+    }
+
+    /**
+     * Parse a formatted price text (e.g. "1 234,50 €") using shop separators.
+     *
+     * @param string $text Price text (entities already decoded by DOM).
+     *
+     * @return float|null
+     *
+     * @link https://woocommerce.github.io/code-reference/files/woocommerce-includes-wc-core-functions.html#function_wc_get_price_decimal_separator
+     */
+    private function parse_price_text( string $text ): ?float {
+        $decimal  = html_entity_decode( (string) wc_get_price_decimal_separator(), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+        $thousand = html_entity_decode( (string) wc_get_price_thousand_separator(), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+        $text = html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+        if ( '' !== $thousand && $thousand !== $decimal ) {
+            $text = str_replace( $thousand, '', $text );
+        }
+
+        // Remove any whitespace (incl. non-breaking spaces used as thousand separators).
+        $text = (string) preg_replace( '/[\s\x{00A0}\x{202F}]+/u', '', $text );
+
+        if ( '' !== $decimal && '.' !== $decimal ) {
+            $text = str_replace( $decimal, '.', $text );
+        }
+
+        if ( 1 !== preg_match( '/\d+(?:\.\d+)?/', $text, $matches ) ) {
+            return null;
+        }
+
+        return (float) $matches[0];
+    }
+
+    /**
+     * Format an amount as plain text with currency and 2 decimals (e.g. "5,00 €").
+     *
+     * @param float $amount Amount.
+     *
+     * @return string Plain text (no HTML, entities decoded; escaped on output).
+     */
+    private function format_plain_price( float $amount ): string {
+        $html = wc_price(
+            $amount,
+            [
+                'decimals' => 2,
+                'in_span'  => false,
+            ]
+        );
+
+        return trim( html_entity_decode( wp_strip_all_tags( (string) $html ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+    }
+
+    /**
+     * Resolve display regular/sale price pair used for the sale badge value.
+     *
+     * Simple products use their own prices. Variable products have no own
+     * regular/sale price, so the variation with the biggest discount is used
+     * (biggest percent for "percent" mode, biggest saved amount for "amount" mode).
+     * Prices are converted with wc_get_price_to_display() / display variation prices,
+     * so they match what the customer sees (taxes, rounding).
+     *
+     * @param \WC_Product $product Product.
+     * @param string      $mode    Sale display mode (percent|amount|label).
+     *
+     * @return array{0:float,1:float} [ regular, sale ]; zeros when not resolvable.
+     *
+     * @link https://woocommerce.github.io/code-reference/classes/WC-Product-Variable.html#method_get_variation_prices
+     * @link https://woocommerce.github.io/code-reference/files/woocommerce-includes-wc-product-functions.html#function_wc_get_price_to_display
+     */
+    private function get_sale_price_pair( \WC_Product $product, string $mode ): array {
+        if ( $product instanceof \WC_Product_Variable ) {
+            $prices = $product->get_variation_prices( true );
+
+            $best_regular = 0.0;
+            $best_sale    = 0.0;
+            $best_score   = 0.0;
+
+            foreach ( (array) ( $prices['regular_price'] ?? [] ) as $variation_id => $regular_raw ) {
+                $regular = (float) $regular_raw;
+                $active  = isset( $prices['price'][ $variation_id ] ) ? (float) $prices['price'][ $variation_id ] : 0.0;
+
+                if ( $regular <= 0 || $active <= 0 || $active >= $regular ) {
+                    continue;
+                }
+
+                $score = 'amount' === $mode ? $regular - $active : 1 - ( $active / $regular );
+
+                if ( $score > $best_score ) {
+                    $best_score   = $score;
+                    $best_regular = $regular;
+                    $best_sale    = $active;
+                }
+            }
+
+            return [ $best_regular, $best_sale ];
+        }
+
+        $raw_regular = $product->get_regular_price();
+        $raw_sale    = $product->get_sale_price();
+
+        // Without both prices a discount cannot be calculated (e.g. grouped products).
+        if ( '' === $raw_regular || '' === $raw_sale ) {
+            return [ 0.0, 0.0 ];
+        }
+
+        return [
+            (float) wc_get_price_to_display( $product, [ 'price' => (float) $raw_regular ] ),
+            (float) wc_get_price_to_display( $product, [ 'price' => (float) $raw_sale ] ),
         ];
     }
 
@@ -478,7 +805,8 @@ class Renderer {
 
         $days      = isset( $conf['days'] ) ? (int) $conf['days'] : 14;
         $timestamp = $created->getTimestamp();
-        $diff_days = ( current_time( 'timestamp' ) - $timestamp ) / DAY_IN_SECONDS;
+        // Both values are real UTC timestamps (current_time( 'timestamp' ) would add the site offset).
+        $diff_days = ( time() - $timestamp ) / DAY_IN_SECONDS;
 
         if ( $diff_days > $days ) {
             return [];
@@ -518,14 +846,29 @@ class Renderer {
         $count = isset( $conf['count'] ) ? max( 1, (int) $conf['count'] ) : 20;
 
         $cache = get_transient( MERINEO_PB_TRANSIENT_BESTSELLERS );
-        if ( ! is_array( $cache ) || (int) ( $cache['top_count'] ?? 0 ) !== $count ) {
+        // "schema" invalidates caches built by older versions (which used a wrong ordering).
+        $cache_schema = 2;
+
+        if (
+            ! is_array( $cache )
+            || (int) ( $cache['top_count'] ?? 0 ) !== $count
+            || (int) ( $cache['schema'] ?? 0 ) !== $cache_schema
+        ) {
+            /*
+             * wc_get_products() does not map "popularity" to any ordering; unknown
+             * orderby values are passed to WP_Query, which falls back to post date.
+             * Order explicitly by the "total_sales" meta maintained by WooCommerce.
+             * Note: a custom "meta_query" is dropped by WC_Data_Store_WP::get_wp_query_args(),
+             * so products that were never sold are filtered out below instead.
+             */
             $ids = wc_get_products(
                 [
-                    'limit'   => $count,
-                    'status'  => [ 'publish' ],
-                    'orderby' => 'popularity',
-                    'order'   => 'DESC',
-                    'return'  => 'ids',
+                    'limit'    => $count,
+                    'status'   => [ 'publish' ],
+                    'meta_key' => 'total_sales', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- result cached in a transient for a day.
+                    'orderby'  => 'meta_value_num',
+                    'order'    => 'DESC',
+                    'return'   => 'ids',
                 ]
             );
 
@@ -533,9 +876,19 @@ class Renderer {
                 $ids = [];
             }
 
+            $ids = array_values(
+                array_filter(
+                    array_map( 'intval', $ids ),
+                    static function ( int $id ): bool {
+                        return (int) get_post_meta( $id, 'total_sales', true ) > 0;
+                    }
+                )
+            );
+
             $cache = [
+                'schema'      => $cache_schema,
                 'top_count'   => $count,
-                'product_ids' => array_map( 'intval', $ids ),
+                'product_ids' => $ids,
             ];
 
             set_transient( MERINEO_PB_TRANSIENT_BESTSELLERS, $cache, DAY_IN_SECONDS );
@@ -650,8 +1003,8 @@ class Renderer {
                     'type'       => 'category',
                     'source'     => 'category',
                     'label'      => (string) $badge['label'],
-                    'bg_color'   => (string) ( $badge['bg_color'] ?? '' ),
-                    'text_color' => (string) ( $badge['text_color'] ?? '' ),
+                    'bg_color'   => (string) sanitize_hex_color( (string) ( $badge['bg_color'] ?? '' ) ),
+                    'text_color' => (string) sanitize_hex_color( (string) ( $badge['text_color'] ?? '' ) ),
                 ];
             }
         }
@@ -690,12 +1043,404 @@ class Renderer {
                 'type'       => 'product',
                 'source'     => 'product',
                 'label'      => (string) $badge['label'],
-                'bg_color'   => (string) ( $badge['bg_color'] ?? '' ),
-                'text_color' => (string) ( $badge['text_color'] ?? '' ),
+                // Hex-only on output too: older versions stored product colors unvalidated.
+                'bg_color'   => (string) sanitize_hex_color( (string) ( $badge['bg_color'] ?? '' ) ),
+                'text_color' => (string) sanitize_hex_color( (string) ( $badge['text_color'] ?? '' ) ),
             ];
         }
 
         return $badges;
+    }
+
+    /**
+     * YITH promo/eligible badge (BOGO, Special offer, Gift products).
+     *
+     * This is a lightweight, catalog-safe badge: it indicates that a promotion rule
+     * applies to this product (scope match) and is currently valid for the current user
+     * (rule->is_valid()). It does NOT attempt to simulate cart quantities/combination logic.
+     *
+     * Version: show only 1 promo badge (highest priority) per product.
+     *
+     * @param \WC_Product $product Product.
+     * @param array       $options Plugin options.
+     * @return array<int, array<string, mixed>>
+     *
+     * @since 1.0.8
+     */
+    private function get_yith_promo_badge( \WC_Product $product, array $options ): array {
+        if ( ! function_exists( 'ywdpd_get_price_rules' ) ) {
+            return [];
+        }
+
+        $candidates = $this->get_yith_promo_candidates_for_product( $product );
+
+        if ( empty( $candidates ) ) {
+            return [];
+        }
+
+        $best_rule     = null;
+        $best_priority = null;
+
+        foreach ( $candidates as $rule ) {
+            if ( ! is_object( $rule ) ) {
+                continue;
+            }
+
+            if ( method_exists( $rule, 'is_valid' ) && true !== $rule->is_valid() ) {
+                continue;
+            }
+
+            if ( method_exists( $rule, 'is_valid_to_apply' ) && true !== $rule->is_valid_to_apply( $product ) ) {
+                continue;
+            }
+
+            $rule_id = $this->get_yith_rule_id( $rule );
+            if ( '' === $rule_id ) {
+                continue;
+            }
+
+            $key  = 'yith_rule_' . preg_replace( '/\D+/', '', $rule_id );
+            $conf = $options['automatic'][ $key ] ?? null;
+
+            if ( ! is_array( $conf ) || empty( $conf['enabled'] ) ) {
+                continue;
+            }
+
+            $priority = null;
+            if ( method_exists( $rule, 'get_priority' ) ) {
+                $priority = (int) $rule->get_priority();
+            }
+
+            if ( null === $best_rule ) {
+                $best_rule     = $rule;
+                $best_priority = $priority;
+                continue;
+            }
+
+            // Lower priority number usually means higher priority; we keep consistent with admin ordering.
+            if ( null !== $priority && ( null === $best_priority || $priority < $best_priority ) ) {
+                $best_rule     = $rule;
+                $best_priority = $priority;
+            }
+        }
+
+        if ( null === $best_rule ) {
+            return [];
+        }
+
+        $rule_id = $this->get_yith_rule_id( $best_rule );
+        if ( '' === $rule_id ) {
+            return [];
+        }
+
+        $key  = 'yith_rule_' . preg_replace( '/\D+/', '', $rule_id );
+        $conf = $options['automatic'][ $key ] ?? null;
+
+        if ( ! is_array( $conf ) || empty( $conf['enabled'] ) ) {
+            return [];
+        }
+
+        $label = isset( $conf['label'] ) ? trim( (string) $conf['label'] ) : '';
+        if ( '' === $label && method_exists( $best_rule, 'get_name' ) ) {
+            $label = trim( (string) $best_rule->get_name() );
+        }
+
+        if ( '' === $label ) {
+            $label = __( 'Promotion', 'merineo-product-badges' );
+        }
+
+        $bg_color   = isset( $conf['bg_color'] ) ? (string) $conf['bg_color'] : '#111827';
+        $text_color = isset( $conf['text_color'] ) ? (string) $conf['text_color'] : '#ffffff';
+
+        return [
+            [
+                'type'       => 'yith_rule',
+                'source'     => 'auto',
+                'label'      => $label,
+                'bg_color'   => $bg_color,
+                'text_color' => $text_color,
+            ],
+        ];
+    }
+
+    /**
+     * YITH catalog price-rule badge (Bulk, Global discount, Category discount).
+     *
+     * This uses YITH's "winning rule for product" resolution (priorities + schedule),
+     * so it reflects real catalog pricing rule application.
+     *
+     * @param \WC_Product $product Product.
+     * @param array       $options Plugin options.
+     * @return array<int, array<string, mixed>>
+     *
+     * @since 1.0.8
+     */
+    private function get_yith_dynamic_pricing_badge( \WC_Product $product, array $options ): array {
+        // If YITH plugin is not active, skip quietly.
+        if ( ! class_exists( '\\YWDPD_Frontend' ) || ! method_exists( '\\YWDPD_Frontend', 'get_instance' ) ) {
+            return [];
+        }
+
+        $frontend = \YWDPD_Frontend::get_instance();
+        if ( ! is_object( $frontend ) || ! method_exists( $frontend, 'get_valid_bulk_rule_for_product' ) ) {
+            return [];
+        }
+
+        $rule = $frontend->get_valid_bulk_rule_for_product( $product );
+        if ( ! is_object( $rule ) || ! method_exists( $rule, 'get_discount_mode' ) ) {
+            return [];
+        }
+
+        $mode = (string) $rule->get_discount_mode();
+        if ( ! in_array( $mode, [ 'bulk', 'discount_whole', 'category_discount' ], true ) ) {
+            return [];
+        }
+
+        $rule_id = $this->get_yith_rule_id( $rule );
+        if ( '' === $rule_id ) {
+            return [];
+        }
+
+        $key  = 'yith_rule_' . preg_replace( '/\D+/', '', $rule_id );
+        $conf = $options['automatic'][ $key ] ?? null;
+
+        if ( ! is_array( $conf ) || empty( $conf['enabled'] ) ) {
+            return [];
+        }
+
+        $label = isset( $conf['label'] ) ? trim( (string) $conf['label'] ) : '';
+        if ( '' === $label && method_exists( $rule, 'get_name' ) ) {
+            $label = trim( (string) $rule->get_name() );
+        }
+
+        if ( '' === $label ) {
+            $label = __( 'Discount', 'merineo-product-badges' );
+        }
+
+        $bg_color   = isset( $conf['bg_color'] ) ? (string) $conf['bg_color'] : '#111827';
+        $text_color = isset( $conf['text_color'] ) ? (string) $conf['text_color'] : '#ffffff';
+
+        return [
+            [
+                'type'       => 'yith_rule',
+                'source'     => 'auto',
+                'label'      => $label,
+                'bg_color'   => $bg_color,
+                'text_color' => $text_color,
+            ],
+        ];
+    }
+
+    /**
+     * Get YITH promo rule candidates for the given product using a lightweight, runtime index.
+     *
+     * @param \WC_Product $product Product.
+     * @return array<int, object>
+     *
+     * @since 1.0.8
+     */
+    private function get_yith_promo_candidates_for_product( \WC_Product $product ): array {
+        $index = $this->get_yith_promo_index();
+        if ( empty( $index ) ) {
+            return [];
+        }
+
+        $product_id = (int) $product->get_id();
+        $rule_ids   = [];
+
+        // Global promo rules.
+        if ( ! empty( $index['global'] ) && is_array( $index['global'] ) ) {
+            $rule_ids = array_merge( $rule_ids, $index['global'] );
+        }
+
+        // Product-specific promo rules.
+        if ( ! empty( $index['products'][ $product_id ] ) && is_array( $index['products'][ $product_id ] ) ) {
+            $rule_ids = array_merge( $rule_ids, $index['products'][ $product_id ] );
+        }
+
+        // Category-based promo rules.
+        if ( ! empty( $index['categories'] ) && is_array( $index['categories'] ) ) {
+            $cat_ids = wc_get_product_term_ids( $product_id, 'product_cat' );
+            foreach ( $cat_ids as $cat_id ) {
+                $cat_id = (int) $cat_id;
+                if ( ! empty( $index['categories'][ $cat_id ] ) && is_array( $index['categories'][ $cat_id ] ) ) {
+                    $rule_ids = array_merge( $rule_ids, $index['categories'][ $cat_id ] );
+                }
+            }
+        }
+
+        // Tag-based promo rules.
+        if ( ! empty( $index['tags'] ) && is_array( $index['tags'] ) ) {
+            $tag_ids = wc_get_product_term_ids( $product_id, 'product_tag' );
+            foreach ( $tag_ids as $tag_id ) {
+                $tag_id = (int) $tag_id;
+                if ( ! empty( $index['tags'][ $tag_id ] ) && is_array( $index['tags'][ $tag_id ] ) ) {
+                    $rule_ids = array_merge( $rule_ids, $index['tags'][ $tag_id ] );
+                }
+            }
+        }
+
+        $rule_ids = array_values( array_unique( array_map( 'intval', $rule_ids ) ) );
+        if ( empty( $rule_ids ) ) {
+            return [];
+        }
+
+        $rules = self::$yith_promo_rules;
+        if ( empty( $rules ) ) {
+            return [];
+        }
+
+        $out = [];
+        foreach ( $rules as $rule ) {
+            $rid = $this->get_yith_rule_id( $rule );
+            if ( '' === $rid ) {
+                continue;
+            }
+            $rid_int = (int) preg_replace( '/\D+/', '', $rid );
+            if ( in_array( $rid_int, $rule_ids, true ) ) {
+                $out[] = $rule;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Build or return cached promo index (per request).
+     *
+     * @return array<string, mixed>
+     *
+     * @since 1.0.8
+     */
+    private function get_yith_promo_index(): array {
+        if ( null !== self::$yith_promo_index && null !== self::$yith_promo_rules ) {
+            return self::$yith_promo_index;
+        }
+
+        self::$yith_promo_index = [];
+        self::$yith_promo_rules = [];
+
+        if ( ! function_exists( 'ywdpd_get_price_rules' ) ) {
+            return [];
+        }
+
+        $promo_modes = [ 'bogo', 'special_offer', 'gift_products' ];
+        $rules       = ywdpd_get_price_rules( $promo_modes );
+
+        if ( ! is_array( $rules ) || empty( $rules ) ) {
+            return [];
+        }
+
+        self::$yith_promo_rules = $rules;
+
+        $index = [
+            'global'     => [],
+            'products'   => [],
+            'categories' => [],
+            'tags'       => [],
+        ];
+
+        foreach ( $rules as $rule ) {
+            if ( ! is_object( $rule ) || ! method_exists( $rule, 'get_discount_mode' ) ) {
+                continue;
+            }
+
+            $mode = (string) $rule->get_discount_mode();
+            if ( ! in_array( $mode, $promo_modes, true ) ) {
+                continue;
+            }
+
+            $rule_id = $this->get_yith_rule_id( $rule );
+            if ( '' === $rule_id ) {
+                continue;
+            }
+            $rid = (int) preg_replace( '/\D+/', '', $rule_id );
+            if ( $rid <= 0 ) {
+                continue;
+            }
+
+            if ( ! method_exists( $rule, 'get_rule_for' ) ) {
+                // Fallback: assume global.
+                $index['global'][] = $rid;
+                continue;
+            }
+
+            $rule_for = (string) $rule->get_rule_for();
+
+            if ( 'all_products' === $rule_for ) {
+                $index['global'][] = $rid;
+                continue;
+            }
+
+            if ( 'specific_products' === $rule_for && method_exists( $rule, 'get_rule_for_product_list' ) ) {
+                $ids = (array) $rule->get_rule_for_product_list();
+                foreach ( $ids as $pid ) {
+                    $pid = (int) $pid;
+                    if ( $pid > 0 ) {
+                        $index['products'][ $pid ][] = $rid;
+                    }
+                }
+                continue;
+            }
+
+            if ( 'specific_categories' === $rule_for && method_exists( $rule, 'get_rule_for_categories_list' ) ) {
+                $ids = (array) $rule->get_rule_for_categories_list();
+                foreach ( $ids as $tid ) {
+                    $tid = (int) $tid;
+                    if ( $tid > 0 ) {
+                        $index['categories'][ $tid ][] = $rid;
+                    }
+                }
+                continue;
+            }
+
+            if ( 'specific_tag' === $rule_for && method_exists( $rule, 'get_rule_for_tags_list' ) ) {
+                $ids = (array) $rule->get_rule_for_tags_list();
+                foreach ( $ids as $tid ) {
+                    $tid = (int) $tid;
+                    if ( $tid > 0 ) {
+                        $index['tags'][ $tid ][] = $rid;
+                    }
+                }
+                continue;
+            }
+
+            // Unknown scope: fall back to global to avoid missing the rule completely.
+            $index['global'][] = $rid;
+        }
+
+        // Normalize arrays.
+        $index['global'] = array_values( array_unique( array_map( 'intval', $index['global'] ) ) );
+
+        foreach ( [ 'products', 'categories', 'tags' ] as $bucket ) {
+            foreach ( $index[ $bucket ] as $k => $vals ) {
+                $index[ $bucket ][ $k ] = array_values( array_unique( array_map( 'intval', (array) $vals ) ) );
+            }
+        }
+
+        self::$yith_promo_index = $index;
+
+        return self::$yith_promo_index;
+    }
+
+    /**
+     * Extract a rule ID from a YITH rule object.
+     *
+     * @param object $rule YITH rule.
+     * @return string
+     *
+     * @since 1.0.8
+     */
+    private function get_yith_rule_id( object $rule ): string {
+        if ( method_exists( $rule, 'get_id' ) ) {
+            return (string) $rule->get_id();
+        }
+
+        if ( property_exists( $rule, 'id' ) ) {
+            return (string) $rule->id;
+        }
+
+        return '';
     }
 
     /**

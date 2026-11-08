@@ -96,7 +96,13 @@ class Settings {
             $settings = [];
         }
 
-        return wp_parse_args( $settings, $this->get_default_settings() );
+        /*
+         * Deep merge: wp_parse_args() is shallow, so badge types added in newer
+         * versions (e.g. "price_drop") would be missing from stored "automatic"
+         * settings until the next save, causing errors in admin and frontend.
+         * Settings contain only associative arrays, so array_replace_recursive() is safe.
+         */
+        return array_replace_recursive( $this->get_default_settings(), $settings );
     }
 
     /**
@@ -227,11 +233,42 @@ class Settings {
         );
 
         // Other badges (some may have "count").
-        foreach ( [ 'featured', 'sale', 'outofstock', 'instock', 'backorder', 'bestseller', 'multipack' ] as $key ) {
+        foreach ( [ 'featured', 'sale', 'price_drop', 'outofstock', 'instock', 'backorder', 'bestseller', 'multipack' ] as $key ) {
             $output['automatic'][ $key ] = $this->sanitize_auto_badge(
                 $automatic[ $key ] ?? [],
                 $defaults['automatic'][ $key ],
                 'bestseller' === $key
+            );
+        }
+
+        
+        /*
+         * Dynamic YITH automatic badges: yith_rule_{ID}
+         * -----------------------------------------------------------------
+         * These keys are not present in defaults because rules are dynamic.
+         * We accept only keys in format "yith_rule_123" and sanitize them
+         * using the same sanitizer as other automatic badges.
+         *
+         * @since 1.0.8
+         */
+        foreach ( $automatic as $dynamic_key => $dynamic_value ) {
+            if ( ! is_string( $dynamic_key ) ) {
+                continue;
+            }
+
+            if ( 1 !== preg_match( '/^yith_rule_\d+$/', $dynamic_key ) ) {
+                continue;
+            }
+
+            $output['automatic'][ $dynamic_key ] = $this->sanitize_auto_badge(
+                is_array( $dynamic_value ) ? $dynamic_value : [],
+                [
+                    'enabled'    => false,
+                    'label'      => '',
+                    'bg_color'   => '#111827',
+                    'text_color' => '#ffffff',
+                ],
+                false
             );
         }
 
@@ -259,10 +296,30 @@ class Settings {
         $css = $merged['css'] ?? [];
 
         $output['css']['custom'] = isset( $css['custom'] )
-            ? (string) $css['custom']
+            ? self::sanitize_custom_css( (string) $css['custom'] )
             : $defaults['css']['custom'];
 
         return $output;
+    }
+
+    /**
+     * Sanitize custom CSS printed inside an inline <style> element.
+     *
+     * Inside a <style> element the browser treats everything as raw text until
+     * "</style", so the only way to break out and inject markup/scripts is a "</"
+     * sequence. It is rewritten to "<\/", which is inert for HTML and, inside CSS
+     * strings, still resolves to "</" (CSS escape). Everything else is kept as
+     * entered, so selectors like "a > b" survive. This matters for users without
+     * unfiltered_html (e.g. site admins on multisite, shop managers).
+     *
+     * @param string $css Raw CSS.
+     *
+     * @return string Sanitized CSS.
+     *
+     * @link https://developer.wordpress.org/reference/functions/wp_add_inline_style/
+     */
+    public static function sanitize_custom_css( string $css ): string {
+        return str_replace( '</', '<\/', $css );
     }
 
     /**
@@ -299,7 +356,7 @@ class Settings {
         $target['bg_color']   = $bg_color;
         $target['text_color'] = $text_color;
 
-        // New: min_discount support (used by "multipack" badge).
+        // min_discount support (used by "multipack" and "price_drop" badges).
         if ( isset( $defaults['min_discount'] ) ) {
             $min_discount = isset( $src['min_discount'] )
                 ? (float) $src['min_discount']
@@ -402,6 +459,14 @@ class Settings {
                     'bg_color'   => '#dc2626',
                     'text_color' => '#ffffff',
                     'mode'       => 'percent',
+                ],
+                // Discount shown by price plugins (e.g. YITH Dynamic Pricing) without a WooCommerce sale price.
+                'price_drop' => [
+                    'enabled'      => false,
+                    'label'        => '-{percent} %',
+                    'bg_color'     => '#dc2626',
+                    'text_color'   => '#ffffff',
+                    'min_discount' => 0, // Minimum percent discount to show badge.
                 ],
                 'outofstock' => [
                     'enabled'    => true,

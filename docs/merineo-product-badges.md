@@ -213,6 +213,36 @@ Price difference uses:
 
 - `wc_get_price_to_display()` for regular and sale prices
 - `wc_price()` with `in_span => false` for display
+- Variable products: the variation with the biggest discount (percent or amount, depending on mode)
+
+### 5.3.1. Discounted price badge (price plugins)
+
+Plugin-agnostic badge for discounts that are visible in the price, but are **not** a WooCommerce sale price – e.g. YITH Dynamic Pricing & Discounts (which only changes the price HTML in the catalog), role-based prices, logged-in / guest prices. Disabled by default.
+
+Logic:
+
+1. Products on sale (`is_on_sale()`, the Sale badge condition) are skipped.
+2. The final price HTML (`get_price_html()`, after all price plugin filters) is read.
+3. All `.woocommerce-Price-amount` values are parsed (shop decimal / thousand separators), except those inside `.woocommerce-price-suffix` (e.g. price excluding VAT).
+4. The lowest amount is compared with the regular display price (variable products: lowest regular variation price). If it is lower, the badge is shown.
+
+`<del>` / `<ins>` markup is not required, because price plugins use configurable formats.
+
+Label placeholders:
+
+- `{percent}` – discount in percent rounded to a whole number (e.g. `25`)
+- `{price}` – saved amount with 2 decimals and currency (e.g. `5,00 €`)
+
+Placeholders have no sign; add it in the label, e.g. `-{percent} %` (default) or `Black Friday -{percent} %`.
+
+Config:
+
+- Enabled
+- Label with placeholders
+- Minimum discount (%) – badge is hidden below this value
+- Background / text colors
+
+Performance: one extra `get_price_html()` call per product (YITH caches its own result per product), parsed once per request. Nothing is cached persistently, because displayed prices may differ per user.
 
 ### 5.4. Stock badges
 
@@ -236,8 +266,9 @@ Logic:
 
 1. Reads X from settings (e.g. 20).
 2. Uses `wc_get_products()` with:
-    - `orderby => 'popularity'`
+    - `meta_key => 'total_sales'`, `orderby => 'meta_value_num'`, `order => 'DESC'`
     - `limit => X`
+    - products with no sales are skipped
 3. Caches result in a transient for 1 day.
 4. If current product ID is in that list, it gets the **Bestseller** badge.
 

@@ -167,6 +167,7 @@ class Category_Meta {
                 </button>
             </p>
             <input type="hidden" id="merineo_pb_term_badges_input" name="merineo_product_badges_json" value="[]" />
+            <?php wp_nonce_field( 'merineo_pb_term_meta', 'merineo_pb_term_meta_nonce' ); ?>
         </div>
         <?php
     }
@@ -182,6 +183,12 @@ class Category_Meta {
     public function render_edit_form( \WP_Term $term, string $taxonomy ): void {
         $value = get_term_meta( $term->term_id, $this->meta_key, true );
         $json  = is_string( $value ) ? $value : '[]';
+
+        // Normalize stored JSON (unescaped unicode/slashes) for safe re-submit.
+        $decoded = json_decode( $json, true );
+        $json    = is_array( $decoded )
+            ? (string) wp_json_encode( $decoded, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES )
+            : '[]';
         ?>
         <tr class="form-field merineo-pb-term-badges" data-merineo-pb-target="#merineo_pb_term_badges_input">
             <th scope="row">
@@ -205,6 +212,7 @@ class Category_Meta {
                         name="merineo_product_badges_json"
                         value="<?php echo esc_attr( $json ); ?>"
                 />
+                <?php wp_nonce_field( 'merineo_pb_term_meta', 'merineo_pb_term_meta_nonce' ); ?>
             </td>
         </tr>
         <?php
@@ -213,43 +221,57 @@ class Category_Meta {
     /**
      * Save term meta when category is created/edited.
      *
+     * created_/edited_product_cat fire for every term update (Quick Edit, REST API,
+     * imports, ERP sync, WP-CLI ...). Badge data is touched only when the request
+     * comes from our own form fields (nonce present and valid); otherwise existing
+     * badges are left untouched.
+     *
      * @param int $term_id Term ID.
      *
      * @return void
      *
+     * @link https://developer.wordpress.org/reference/hooks/edited_taxonomy/
+     * @link https://developer.wordpress.org/reference/hooks/created_taxonomy/
      * @link https://developer.wordpress.org/reference/functions/update_term_meta/
      */
     public function save_term( int $term_id ): void {
-        if ( ! current_user_can( 'manage_product_terms' ) ) {
+        if ( ! isset( $_POST['merineo_pb_term_meta_nonce'], $_POST['merineo_product_badges_json'] ) ) {
             return;
         }
 
-        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- trusted admin screen.
-        $json = isset( $_POST['merineo_product_badges_json'] )
-                ? wp_unslash( (string) $_POST['merineo_product_badges_json'] )
-                : '';
+        $nonce = sanitize_text_field( wp_unslash( (string) $_POST['merineo_pb_term_meta_nonce'] ) );
+        if ( ! wp_verify_nonce( $nonce, 'merineo_pb_term_meta' ) ) {
+            return;
+        }
 
-        if ( '' === $json ) {
+        if ( ! current_user_can( 'edit_term', $term_id ) ) {
+            return;
+        }
+
+        // Raw JSON; sanitized via register_term_meta() -> sanitize_meta_value().
+        $json = wp_unslash( (string) $_POST['merineo_product_badges_json'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+        if ( '' === $json || '[]' === $json ) {
             delete_term_meta( $term_id, $this->meta_key );
             return;
         }
 
-        // Pass raw JSON to update_term_meta() – value will be sanitized
-        // via register_term_meta() -> sanitize_meta_value().
-        update_term_meta( $term_id, $this->meta_key, $json );
+        // update_metadata() runs wp_unslash() on the value, which would strip the
+        // backslashes JSON uses for escaping (e.g. \" in labels) and corrupt it.
+        update_term_meta( $term_id, $this->meta_key, wp_slash( $json ) );
     }
 
     /**
      * Sanitize meta value (JSON string) for this term meta.
      *
-     * @param string $value Raw JSON string.
+     * @param mixed $value Raw JSON string (non-strings are rejected).
      *
      * @return string Sanitized JSON string.
      *
      * @link https://developer.wordpress.org/reference/functions/sanitize_hex_color/
      */
-    public function sanitize_meta_value( string $value ): string {
-        $data = json_decode( $value, true );
+    public function sanitize_meta_value( $value ): string {
+        $data = is_string( $value ) ? json_decode( $value, true ) : null;
         if ( ! is_array( $data ) ) {
             return '[]';
         }
