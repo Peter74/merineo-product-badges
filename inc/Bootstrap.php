@@ -44,6 +44,8 @@ final class Bootstrap {
         static::declare_hpos_compatibility();
 
         require_once __DIR__ . '/Common/Settings.php';
+        // YITH Dynamic Pricing & Discounts helper (admin UI + automatic badges).
+        require_once __DIR__ . '/Common/Yith_Dynamic_Pricing_Helper.php';
         require_once __DIR__ . '/Admin/Menu.php';
         require_once __DIR__ . '/Admin/Settings_Page.php';
         require_once __DIR__ . '/Admin/Product_Meta.php';

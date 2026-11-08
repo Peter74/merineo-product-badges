@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Merineo\ProductBadges\Admin;
 
 use Merineo\ProductBadges\Common\Settings;
+use Merineo\ProductBadges\Common\Yith_Dynamic_Pricing_Helper;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -48,6 +49,10 @@ class Settings_Page {
     public function hooks(): void {
         add_action( 'admin_init', [ $this, 'register_settings' ] );
 
+        // options.php requires manage_options by default; shop managers can open
+        // the page (manage_woocommerce), so they must be able to save it too.
+        add_filter( 'option_page_capability_merineo_product_badges', [ $this, 'filter_option_page_capability' ] );
+
         // Run after Menu::register_menu (priority 99), so the submenu page exists
         // and get_plugin_page_hookname() can find it.
         add_action( 'admin_menu', [ $this, 'connect_page_callback' ], 120 );
@@ -64,6 +69,21 @@ class Settings_Page {
      */
     public function register_settings(): void {
         $this->settings->register();
+    }
+
+    /**
+     * Capability required to save the settings via options.php.
+     *
+     * Matches the capability used to display the page (Menu / render_page()).
+     *
+     * @param string $capability Default capability (manage_options).
+     *
+     * @return string
+     *
+     * @link https://developer.wordpress.org/reference/hooks/option_page_capability_option_page/
+     */
+    public function filter_option_page_capability( $capability ): string {
+        return current_user_can( 'manage_woocommerce' ) ? 'manage_woocommerce' : (string) $capability;
     }
 
     /**
@@ -315,12 +335,48 @@ class Settings_Page {
                         $option_name
                 );
             }
+
+            // YITH Dynamic Pricing & Discounts rules (price rules + promo rules).
+            if ( Yith_Dynamic_Pricing_Helper::is_available() ) {
+                $yith_rules = Yith_Dynamic_Pricing_Helper::get_rules();
+
+                if ( ! empty( $yith_rules ) ) {
+                    foreach ( $yith_rules as $rule_info ) {
+                        $key   = Yith_Dynamic_Pricing_Helper::make_option_key( (string) $rule_info['id'] );
+                        $title = (string) $rule_info['name'];
+
+                        $badge = $options['automatic'][ $key ] ?? [
+                            'enabled'    => 0,
+                            'label'      => $title,
+                            'bg_color'   => '#111827',
+                            'text_color' => '#ffffff',
+                        ];
+
+                        $is_valid = ! empty( $rule_info['is_valid'] );
+
+                        $note = $is_valid
+                            ? __( 'Status: Active now. Badge shows only on products where this rule applies (and is valid for current user).', 'merineo-product-badges' )
+                            : __( 'Status: Not active now (schedule/conditions/user). Badge will start showing automatically once the rule becomes active and applies.', 'merineo-product-badges' );
+
+                        if ( is_array( $badge ) ) {
+                            $badge['_merineo_note'] = $note;
+                        }
+
+                        $this->render_auto_badge_accordion(
+                            $key,
+                            $title,
+                            is_array( $badge ) ? $badge : [],
+                            $option_name
+                        );
+                    }
+                }
+            }
             ?>
 
             <p class="description merineo-pb-order-note">
                 <?php
                 esc_html_e(
-                        'Badges are rendered in this order (when active): Recommended, Sale, Multipack, New, Category, Product-specific.',
+                        'Badges are rendered in this order (when active): Recommended, Sale, Promotions (YITH), Dynamic pricing (YITH), Multipack, New, Bestseller, Stock status, Category, Product-specific.',
                         'merineo-product-badges'
                 );
                 ?>
@@ -742,6 +798,21 @@ class Settings_Page {
                                     ?>
                                 </p>
                             <?php endif; ?>
+                            <?php
+                            /**
+                             * Informational note about YITH rule status for YITH-based badges.
+                             * Not saved, just for admin reference when configuring badges.
+                             *
+                             * @since 1.0.8
+                             */
+                            ?>
+                            <?php if ( ! empty( $badge['_merineo_note'] ) ) : ?>
+                                <p class="description" style="margin-top:6px;">
+                                    <?php echo esc_html( (string) $badge['_merineo_note'] ); ?>
+                                </p>
+                            <?php endif; ?>
+
+
                         </td>
                     </tr>
 

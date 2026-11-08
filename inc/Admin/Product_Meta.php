@@ -242,15 +242,15 @@ class Product_Meta {
     /**
      * Sanitize meta value (JSON string) for this post meta.
      *
-     * @param string $value Raw JSON string.
+     * @param mixed $value Raw JSON string (non-strings are rejected).
      *
      * @return string Sanitized JSON string.
      *
      * @link https://developer.wordpress.org/reference/functions/sanitize_hex_color/
      * @link https://developer.wordpress.org/reference/functions/wp_json_encode/
      */
-    public function sanitize_meta_value( string $value ): string {
-        $data = json_decode( $value, true );
+    public function sanitize_meta_value( $value ): string {
+        $data = is_string( $value ) ? json_decode( $value, true ) : null;
         if ( ! is_array( $data ) ) {
             return '[]';
         }
@@ -271,13 +271,14 @@ class Product_Meta {
             $bg_raw  = isset( $badge['bg_color'] ) ? (string) $badge['bg_color'] : '';
             $txt_raw = isset( $badge['text_color'] ) ? (string) $badge['text_color'] : '';
 
-            $bg_color   = $bg_raw ? sanitize_text_field( $bg_raw ) : '';
-            $text_color = $txt_raw ? sanitize_text_field( $txt_raw ) : '';
+            // Colors end up in an inline style attribute; allow only hex colors.
+            $bg_color   = $bg_raw ? sanitize_hex_color( $bg_raw ) : '';
+            $text_color = $txt_raw ? sanitize_hex_color( $txt_raw ) : '';
 
             $sanitized[] = [
                     'label'      => $label,
-                    'bg_color'   => $bg_color,
-                    'text_color' => $text_color,
+                    'bg_color'   => $bg_color ? $bg_color : '',
+                    'text_color' => $text_color ? $text_color : '',
             ];
         }
 

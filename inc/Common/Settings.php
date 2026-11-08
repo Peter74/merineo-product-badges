@@ -235,6 +235,37 @@ class Settings {
             );
         }
 
+        
+        /*
+         * Dynamic YITH automatic badges: yith_rule_{ID}
+         * -----------------------------------------------------------------
+         * These keys are not present in defaults because rules are dynamic.
+         * We accept only keys in format "yith_rule_123" and sanitize them
+         * using the same sanitizer as other automatic badges.
+         *
+         * @since 1.0.8
+         */
+        foreach ( $automatic as $dynamic_key => $dynamic_value ) {
+            if ( ! is_string( $dynamic_key ) ) {
+                continue;
+            }
+
+            if ( 1 !== preg_match( '/^yith_rule_\d+$/', $dynamic_key ) ) {
+                continue;
+            }
+
+            $output['automatic'][ $dynamic_key ] = $this->sanitize_auto_badge(
+                is_array( $dynamic_value ) ? $dynamic_value : [],
+                [
+                    'enabled'    => false,
+                    'label'      => '',
+                    'bg_color'   => '#111827',
+                    'text_color' => '#ffffff',
+                ],
+                false
+            );
+        }
+
         // Sale display mode.
         $sale               = $automatic['sale'] ?? [];
         $sale_mode          = $sale['mode'] ?? $defaults['automatic']['sale']['mode'];
@@ -259,10 +290,30 @@ class Settings {
         $css = $merged['css'] ?? [];
 
         $output['css']['custom'] = isset( $css['custom'] )
-            ? (string) $css['custom']
+            ? self::sanitize_custom_css( (string) $css['custom'] )
             : $defaults['css']['custom'];
 
         return $output;
+    }
+
+    /**
+     * Sanitize custom CSS printed inside an inline <style> element.
+     *
+     * Inside a <style> element the browser treats everything as raw text until
+     * "</style", so the only way to break out and inject markup/scripts is a "</"
+     * sequence. It is rewritten to "<\/", which is inert for HTML and, inside CSS
+     * strings, still resolves to "</" (CSS escape). Everything else is kept as
+     * entered, so selectors like "a > b" survive. This matters for users without
+     * unfiltered_html (e.g. site admins on multisite, shop managers).
+     *
+     * @param string $css Raw CSS.
+     *
+     * @return string Sanitized CSS.
+     *
+     * @link https://developer.wordpress.org/reference/functions/wp_add_inline_style/
+     */
+    public static function sanitize_custom_css( string $css ): string {
+        return str_replace( '</', '<\/', $css );
     }
 
     /**
